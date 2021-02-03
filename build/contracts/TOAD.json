@@ -1,0 +1,1955 @@
+{
+  "contractName": "TOAD",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "e_tag",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "e_sk",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "e_pk",
+              "type": "uint256"
+            }
+          ],
+          "indexed": false,
+          "internalType": "struct TOAD.EncryptedAccount[]",
+          "name": "group",
+          "type": "tuple[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "threshold",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "label",
+          "type": "string"
+        }
+      ],
+      "name": "GroupCreation",
+      "type": "event"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "N",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "has_been_used",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "t",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "e_tag",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "e_sk",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "e_pk",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct TOAD.EncryptedAccount[]",
+          "name": "_group",
+          "type": "tuple[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_threshold",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_label",
+          "type": "string"
+        }
+      ],
+      "name": "groupCreation",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"e_tag\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"e_sk\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"e_pk\",\"type\":\"uint256\"}],\"indexed\":false,\"internalType\":\"struct TOAD.EncryptedAccount[]\",\"name\":\"group\",\"type\":\"tuple[]\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"threshold\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"label\",\"type\":\"string\"}],\"name\":\"GroupCreation\",\"type\":\"event\"},{\"constant\":true,\"inputs\":[],\"name\":\"N\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"e_tag\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"e_sk\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"e_pk\",\"type\":\"uint256\"}],\"internalType\":\"struct TOAD.EncryptedAccount[]\",\"name\":\"_group\",\"type\":\"tuple[]\"},{\"internalType\":\"uint256\",\"name\":\"_threshold\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_label\",\"type\":\"string\"}],\"name\":\"groupCreation\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"has_been_used\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"t\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/alexis/Documents/Stage Disc/TOAD/contracts/TOAD.sol\":\"TOAD\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/alexis/Documents/Stage Disc/TOAD/contracts/TOAD.sol\":{\"keccak256\":\"0xc4416789339c42e6abb10759ca7e3f1f144b5e8877b80d51709d52b7ba29a764\",\"urls\":[\"bzz-raw://f834ab2e3dea2a76a15366321a04d69e628258c3a1cefecf57f04bbcf376b2a2\",\"dweb:/ipfs/QmY318MNSf3jSZJHedSJKrQyM8KZWDJ1ZtiGrh5CpzLnkB\"]}},\"version\":1}",
+  "bytecode": "0x608060405260008060006101000a81548160ff02191690831515021790555034801561002a57600080fd5b506106728061003a6000396000f3fe608060405234801561001057600080fd5b506004361061004c5760003560e01c8063038caef814610051578063293cb2ec1461006d57806392d0d1531461008b578063c9e525df146100a9575b600080fd5b61006b600480360361006691908101906102c1565b6100c7565b005b610075610157565b60405161008291906104a3565b60405180910390f35b610093610169565b6040516100a091906104be565b60405180910390f35b6100b161016f565b6040516100be91906104be565b60405180910390f35b6000809054906101000a900460ff16156100e057600080fd5b60016000806101000a81548160ff0219169083151502179055508251600181905550600154821061011057600080fd5b816002819055507f82672eb5e6c44c55e91280a329a9e88093477274f1e0249369f0633c0dfb265d83838360405161014a9392919061045e565b60405180910390a1505050565b6000809054906101000a900460ff1681565b60025481565b60015481565b600082601f83011261018657600080fd5b813561019961019482610506565b6104d9565b915081818352602084019350602081019050838560608402820111156101be57600080fd5b60005b838110156101ee57816101d4888261024c565b8452602084019350606083019250506001810190506101c1565b5050505092915050565b600082601f83011261020957600080fd5b813561021c6102178261052e565b6104d9565b9150808252602083016020830185838301111561023857600080fd5b6102438382846105c5565b50505092915050565b60006060828403121561025e57600080fd5b61026860606104d9565b90506000610278848285016102ac565b600083015250602061028c848285016102ac565b60208301525060406102a0848285016102ac565b60408301525092915050565b6000813590506102bb81610618565b92915050565b6000806000606084860312156102d657600080fd5b600084013567ffffffffffffffff8111156102f057600080fd5b6102fc86828701610175565b935050602061030d868287016102ac565b925050604084013567ffffffffffffffff81111561032a57600080fd5b610336868287016101f8565b9150509250925092565b600061034c83836103fe565b60608301905092915050565b60006103638261056a565b61036d818561058d565b93506103788361055a565b8060005b838110156103a95781516103908882610340565b975061039b83610580565b92505060018101905061037c565b5085935050505092915050565b6103bf816105af565b82525050565b60006103d082610575565b6103da818561059e565b93506103ea8185602086016105d4565b6103f381610607565b840191505092915050565b6060820160008201516104146000850182610440565b5060208201516104276020850182610440565b50604082015161043a6040850182610440565b50505050565b610449816105bb565b82525050565b610458816105bb565b82525050565b600060608201905081810360008301526104788186610358565b9050610487602083018561044f565b818103604083015261049981846103c5565b9050949350505050565b60006020820190506104b860008301846103b6565b92915050565b60006020820190506104d3600083018461044f565b92915050565b6000604051905081810181811067ffffffffffffffff821117156104fc57600080fd5b8060405250919050565b600067ffffffffffffffff82111561051d57600080fd5b602082029050602081019050919050565b600067ffffffffffffffff82111561054557600080fd5b601f19601f8301169050602081019050919050565b6000819050602082019050919050565b600081519050919050565b600081519050919050565b6000602082019050919050565b600082825260208201905092915050565b600082825260208201905092915050565b60008115159050919050565b6000819050919050565b82818337600083830152505050565b60005b838110156105f25780820151818401526020810190506105d7565b83811115610601576000848401525b50505050565b6000601f19601f8301169050919050565b610621816105bb565b811461062c57600080fd5b5056fea365627a7a72315820f6e0e24e86d4094084b9282f7d58b1d2720ba101f75c6b490ef2ce3b3bbbcba66c6578706572696d656e74616cf564736f6c63430005100040",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061004c5760003560e01c8063038caef814610051578063293cb2ec1461006d57806392d0d1531461008b578063c9e525df146100a9575b600080fd5b61006b600480360361006691908101906102c1565b6100c7565b005b610075610157565b60405161008291906104a3565b60405180910390f35b610093610169565b6040516100a091906104be565b60405180910390f35b6100b161016f565b6040516100be91906104be565b60405180910390f35b6000809054906101000a900460ff16156100e057600080fd5b60016000806101000a81548160ff0219169083151502179055508251600181905550600154821061011057600080fd5b816002819055507f82672eb5e6c44c55e91280a329a9e88093477274f1e0249369f0633c0dfb265d83838360405161014a9392919061045e565b60405180910390a1505050565b6000809054906101000a900460ff1681565b60025481565b60015481565b600082601f83011261018657600080fd5b813561019961019482610506565b6104d9565b915081818352602084019350602081019050838560608402820111156101be57600080fd5b60005b838110156101ee57816101d4888261024c565b8452602084019350606083019250506001810190506101c1565b5050505092915050565b600082601f83011261020957600080fd5b813561021c6102178261052e565b6104d9565b9150808252602083016020830185838301111561023857600080fd5b6102438382846105c5565b50505092915050565b60006060828403121561025e57600080fd5b61026860606104d9565b90506000610278848285016102ac565b600083015250602061028c848285016102ac565b60208301525060406102a0848285016102ac565b60408301525092915050565b6000813590506102bb81610618565b92915050565b6000806000606084860312156102d657600080fd5b600084013567ffffffffffffffff8111156102f057600080fd5b6102fc86828701610175565b935050602061030d868287016102ac565b925050604084013567ffffffffffffffff81111561032a57600080fd5b610336868287016101f8565b9150509250925092565b600061034c83836103fe565b60608301905092915050565b60006103638261056a565b61036d818561058d565b93506103788361055a565b8060005b838110156103a95781516103908882610340565b975061039b83610580565b92505060018101905061037c565b5085935050505092915050565b6103bf816105af565b82525050565b60006103d082610575565b6103da818561059e565b93506103ea8185602086016105d4565b6103f381610607565b840191505092915050565b6060820160008201516104146000850182610440565b5060208201516104276020850182610440565b50604082015161043a6040850182610440565b50505050565b610449816105bb565b82525050565b610458816105bb565b82525050565b600060608201905081810360008301526104788186610358565b9050610487602083018561044f565b818103604083015261049981846103c5565b9050949350505050565b60006020820190506104b860008301846103b6565b92915050565b60006020820190506104d3600083018461044f565b92915050565b6000604051905081810181811067ffffffffffffffff821117156104fc57600080fd5b8060405250919050565b600067ffffffffffffffff82111561051d57600080fd5b602082029050602081019050919050565b600067ffffffffffffffff82111561054557600080fd5b601f19601f8301169050602081019050919050565b6000819050602082019050919050565b600081519050919050565b600081519050919050565b6000602082019050919050565b600082825260208201905092915050565b600082825260208201905092915050565b60008115159050919050565b6000819050919050565b82818337600083830152505050565b60005b838110156105f25780820151818401526020810190506105d7565b83811115610601576000848401525b50505050565b6000601f19601f8301169050919050565b610621816105bb565b811461062c57600080fd5b5056fea365627a7a72315820f6e0e24e86d4094084b9282f7d58b1d2720ba101f75c6b490ef2ce3b3bbbcba66c6578706572696d656e74616cf564736f6c63430005100040",
+  "sourceMap": "60:713:1:-;;;158:5;130:33;;;;;;;;;;;;;;;;;;;;60:713;8:9:-1;5:2;;;30:1;27;20:12;5:2;60:713:1;;;;;;;",
+  "deployedSourceMap": "60:713:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;60:713:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;411:360;;;;;;;;;;;;;;;;:::i;:::-;;130:33;;;:::i;:::-;;;;;;;;;;;;;;;;188:13;;;:::i;:::-;;;;;;;;;;;;;;;;169;;;:::i;:::-;;;;;;;;;;;;;;;;411:360;578:13;;;;;;;;;;;577:14;569:23;;;;;;618:4;602:13;;:20;;;;;;;;;;;;;;;;;;637:6;:13;633:1;:17;;;;681:1;;668:10;:14;660:23;;;;;;697:10;693:1;:14;;;;723:41;737:6;745:10;757:6;723:41;;;;;;;;;;;;;;;;;411:360;;;:::o;130:33::-;;;;;;;;;;;;;:::o;188:13::-;;;;:::o;169:::-;;;;:::o;44:791:-1:-;;189:3;182:4;174:6;170:17;166:27;156:2;;207:1;204;197:12;156:2;244:6;231:20;266:108;281:92;366:6;281:92;;;266:108;;;257:117;;391:5;416:6;409:5;402:21;446:4;438:6;434:17;424:27;;468:4;463:3;459:14;452:21;;521:6;568:3;560:4;552:6;548:17;543:3;539:27;536:36;533:2;;;585:1;582;575:12;533:2;610:1;595:234;620:6;617:1;614:13;595:234;;;678:3;700:65;761:3;749:10;700:65;;;695:3;688:78;789:4;784:3;780:14;773:21;;817:4;812:3;808:14;801:21;;652:177;642:1;639;635:9;630:14;;595:234;;;599:14;149:686;;;;;;;;844:442;;946:3;939:4;931:6;927:17;923:27;913:2;;964:1;961;954:12;913:2;1001:6;988:20;1023:65;1038:49;1080:6;1038:49;;;1023:65;;;1014:74;;1108:6;1101:5;1094:21;1144:4;1136:6;1132:17;1177:4;1170:5;1166:16;1212:3;1203:6;1198:3;1194:16;1191:25;1188:2;;;1229:1;1226;1219:12;1188:2;1239:41;1273:6;1268:3;1263;1239:41;;;906:380;;;;;;;;1329:615;;1446:4;1434:9;1429:3;1425:19;1421:30;1418:2;;;1464:1;1461;1454:12;1418:2;1482:20;1497:4;1482:20;;;1473:29;;1553:1;1585:49;1630:3;1621:6;1610:9;1606:22;1585:49;;;1578:4;1571:5;1567:16;1560:75;1512:134;1696:2;1729:49;1774:3;1765:6;1754:9;1750:22;1729:49;;;1722:4;1715:5;1711:16;1704:75;1656:134;1840:2;1873:49;1918:3;1909:6;1898:9;1894:22;1873:49;;;1866:4;1859:5;1855:16;1848:75;1800:134;1412:532;;;;;1951:130;;2031:6;2018:20;2009:29;;2043:33;2070:5;2043:33;;;2003:78;;;;;2088:789;;;;2289:2;2277:9;2268:7;2264:23;2260:32;2257:2;;;2305:1;2302;2295:12;2257:2;2368:1;2357:9;2353:17;2340:31;2391:18;2383:6;2380:30;2377:2;;;2423:1;2420;2413:12;2377:2;2443:106;2541:7;2532:6;2521:9;2517:22;2443:106;;;2433:116;;2319:236;2586:2;2604:53;2649:7;2640:6;2629:9;2625:22;2604:53;;;2594:63;;2565:98;2722:2;2711:9;2707:18;2694:32;2746:18;2738:6;2735:30;2732:2;;;2778:1;2775;2768:12;2732:2;2798:63;2853:7;2844:6;2833:9;2829:22;2798:63;;;2788:73;;2673:194;2251:626;;;;;;2885:289;;3028:106;3130:3;3122:6;3028:106;;;3163:4;3158:3;3154:14;3140:28;;3021:153;;;;;3255:914;;3456:82;3532:5;3456:82;;;3551:114;3658:6;3653:3;3551:114;;;3544:121;;3686:84;3764:5;3686:84;;;3790:7;3818:1;3803:344;3828:6;3825:1;3822:13;3803:344;;;3895:6;3889:13;3916:119;4031:3;4016:13;3916:119;;;3909:126;;4052:88;4133:6;4052:88;;;4042:98;;3860:287;3850:1;3847;3843:9;3838:14;;3803:344;;;3807:14;4160:3;4153:10;;3435:734;;;;;;;;4177:104;4254:21;4269:5;4254:21;;;4249:3;4242:34;4236:45;;;4288:347;;4400:39;4433:5;4400:39;;;4451:71;4515:6;4510:3;4451:71;;;4444:78;;4527:52;4572:6;4567:3;4560:4;4553:5;4549:16;4527:52;;;4600:29;4622:6;4600:29;;;4595:3;4591:39;4584:46;;4380:255;;;;;;4709:631;4852:4;4847:3;4843:14;4936:4;4929:5;4925:16;4919:23;4948:63;5005:4;5000:3;4996:14;4982:12;4948:63;;;4872:145;5090:4;5083:5;5079:16;5073:23;5102:63;5159:4;5154:3;5150:14;5136:12;5102:63;;;5027:144;5244:4;5237:5;5233:16;5227:23;5256:63;5313:4;5308:3;5304:14;5290:12;5256:63;;;5181:144;4825:515;;;;5347:103;5420:24;5438:5;5420:24;;;5415:3;5408:37;5402:48;;;5457:113;5540:24;5558:5;5540:24;;;5535:3;5528:37;5522:48;;;5577:783;;5877:2;5866:9;5862:18;5854:26;;5927:9;5921:4;5917:20;5913:1;5902:9;5898:17;5891:47;5952:164;6111:4;6102:6;5952:164;;;5944:172;;6127:72;6195:2;6184:9;6180:18;6171:6;6127:72;;;6247:9;6241:4;6237:20;6232:2;6221:9;6217:18;6210:48;6272:78;6345:4;6336:6;6272:78;;;6264:86;;5848:512;;;;;;;6367:201;;6479:2;6468:9;6464:18;6456:26;;6493:65;6555:1;6544:9;6540:17;6531:6;6493:65;;;6450:118;;;;;6575:213;;6693:2;6682:9;6678:18;6670:26;;6707:71;6775:1;6764:9;6760:17;6751:6;6707:71;;;6664:124;;;;;6795:256;;6857:2;6851:9;6841:19;;6895:4;6887:6;6883:17;6994:6;6982:10;6979:22;6958:18;6946:10;6943:34;6940:62;6937:2;;;7015:1;7012;7005:12;6937:2;7035:10;7031:2;7024:22;6835:216;;;;;7058:332;;7245:18;7237:6;7234:30;7231:2;;;7277:1;7274;7267:12;7231:2;7312:4;7304:6;7300:17;7292:25;;7375:4;7369;7365:15;7357:23;;7168:222;;;;7397:322;;7541:18;7533:6;7530:30;7527:2;;;7573:1;7570;7563:12;7527:2;7640:4;7636:9;7629:4;7621:6;7617:17;7613:33;7605:41;;7704:4;7698;7694:15;7686:23;;7464:255;;;;7726:179;;7840:3;7832:11;;7878:4;7873:3;7869:14;7861:22;;7826:79;;;;7912:165;;8049:5;8043:12;8033:22;;8014:63;;;;8084:122;;8178:5;8172:12;8162:22;;8143:63;;;;8213:136;;8339:4;8334:3;8330:14;8322:22;;8316:33;;;;8357:206;;8515:6;8510:3;8503:19;8552:4;8547:3;8543:14;8528:29;;8496:67;;;;;8572:163;;8687:6;8682:3;8675:19;8724:4;8719:3;8715:14;8700:29;;8668:67;;;;;8743:85;;8816:5;8809:13;8802:21;8791:32;;8785:43;;;;8835:72;;8897:5;8886:16;;8880:27;;;;8915:145;8996:6;8991:3;8986;8973:30;9052:1;9043:6;9038:3;9034:16;9027:27;8966:94;;;;9069:268;9134:1;9141:101;9155:6;9152:1;9149:13;9141:101;;;9231:1;9226:3;9222:11;9216:18;9212:1;9207:3;9203:11;9196:39;9177:2;9174:1;9170:10;9165:15;;9141:101;;;9257:6;9254:1;9251:13;9248:2;;;9322:1;9313:6;9308:3;9304:16;9297:27;9248:2;9118:219;;;;;9345:97;;9433:2;9429:7;9424:2;9417:5;9413:14;9409:28;9399:38;;9393:49;;;;9450:117;9519:24;9537:5;9519:24;;;9512:5;9509:35;9499:2;;9558:1;9555;9548:12;9499:2;9493:74;",
+  "source": "pragma solidity >=0.5.0;\npragma experimental ABIEncoderV2;\n\ncontract TOAD{\n    ///private variables\n\n    /// public variables\n    bool public has_been_used = false;\n    uint public N;\n    uint public t;\n\n    ///structures\n    struct EncryptedAccount{\n        uint256 e_tag;\n        uint256 e_sk;\n        uint256 e_pk;\n    }\n\n    event GroupCreation(EncryptedAccount[] group, uint threshold, string label);\n\n    function groupCreation(\n        EncryptedAccount[] memory _group, \n        uint _threshold, \n        string memory _label\n        ) public {\n        \n        require(!has_been_used);\n        has_been_used = true;\n\n        N = _group.length;\n        require(_threshold < N);\n        t = _threshold;\n\n        emit GroupCreation(_group, _threshold, _label);\n    }\n}",
+  "sourcePath": "/home/alexis/Documents/Stage Disc/TOAD/contracts/TOAD.sol",
+  "ast": {
+    "absolutePath": "/home/alexis/Documents/Stage Disc/TOAD/contracts/TOAD.sol",
+    "exportedSymbols": {
+      "TOAD": [
+        100
+      ]
+    },
+    "id": 101,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 34,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:1"
+      },
+      {
+        "id": 35,
+        "literals": [
+          "experimental",
+          "ABIEncoderV2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "25:33:1"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 100,
+        "linearizedBaseContracts": [
+          100
+        ],
+        "name": "TOAD",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 38,
+            "name": "has_been_used",
+            "nodeType": "VariableDeclaration",
+            "scope": 100,
+            "src": "130:33:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bool",
+              "typeString": "bool"
+            },
+            "typeName": {
+              "id": 36,
+              "name": "bool",
+              "nodeType": "ElementaryTypeName",
+              "src": "130:4:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bool",
+                "typeString": "bool"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "66616c7365",
+              "id": 37,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "bool",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "158:5:1",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_bool",
+                "typeString": "bool"
+              },
+              "value": "false"
+            },
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 40,
+            "name": "N",
+            "nodeType": "VariableDeclaration",
+            "scope": 100,
+            "src": "169:13:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 39,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "169:4:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 42,
+            "name": "t",
+            "nodeType": "VariableDeclaration",
+            "scope": 100,
+            "src": "188:13:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 41,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "188:4:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "TOAD.EncryptedAccount",
+            "id": 49,
+            "members": [
+              {
+                "constant": false,
+                "id": 44,
+                "name": "e_tag",
+                "nodeType": "VariableDeclaration",
+                "scope": 49,
+                "src": "259:13:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 43,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "259:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 46,
+                "name": "e_sk",
+                "nodeType": "VariableDeclaration",
+                "scope": 49,
+                "src": "282:12:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 45,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "282:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 48,
+                "name": "e_pk",
+                "nodeType": "VariableDeclaration",
+                "scope": 49,
+                "src": "304:12:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 47,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "304:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "EncryptedAccount",
+            "nodeType": "StructDefinition",
+            "scope": 100,
+            "src": "226:97:1",
+            "visibility": "public"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 58,
+            "name": "GroupCreation",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 57,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 52,
+                  "indexed": false,
+                  "name": "group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 58,
+                  "src": "349:24:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_memory_$dyn_memory_ptr",
+                    "typeString": "struct TOAD.EncryptedAccount[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "contractScope": null,
+                      "id": 50,
+                      "name": "EncryptedAccount",
+                      "nodeType": "UserDefinedTypeName",
+                      "referencedDeclaration": 49,
+                      "src": "349:16:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_EncryptedAccount_$49_storage_ptr",
+                        "typeString": "struct TOAD.EncryptedAccount"
+                      }
+                    },
+                    "id": 51,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "349:18:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_storage_$dyn_storage_ptr",
+                      "typeString": "struct TOAD.EncryptedAccount[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54,
+                  "indexed": false,
+                  "name": "threshold",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 58,
+                  "src": "375:14:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 53,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "375:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 56,
+                  "indexed": false,
+                  "name": "label",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 58,
+                  "src": "391:12:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 55,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "391:6:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "348:56:1"
+            },
+            "src": "329:76:1"
+          },
+          {
+            "body": {
+              "id": 98,
+              "nodeType": "Block",
+              "src": "550:221:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 70,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "UnaryOperation",
+                        "operator": "!",
+                        "prefix": true,
+                        "src": "577:14:1",
+                        "subExpression": {
+                          "argumentTypes": null,
+                          "id": 69,
+                          "name": "has_been_used",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 38,
+                          "src": "578:13:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          }
+                        },
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 68,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        118,
+                        119
+                      ],
+                      "referencedDeclaration": 118,
+                      "src": "569:7:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 71,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "569:23:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 72,
+                  "nodeType": "ExpressionStatement",
+                  "src": "569:23:1"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 75,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 73,
+                      "name": "has_been_used",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 38,
+                      "src": "602:13:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "hexValue": "74727565",
+                      "id": 74,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "618:4:1",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "true"
+                    },
+                    "src": "602:20:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 76,
+                  "nodeType": "ExpressionStatement",
+                  "src": "602:20:1"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 80,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 77,
+                      "name": "N",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 40,
+                      "src": "633:1:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 78,
+                        "name": "_group",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 61,
+                        "src": "637:6:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_memory_$dyn_memory_ptr",
+                          "typeString": "struct TOAD.EncryptedAccount memory[] memory"
+                        }
+                      },
+                      "id": 79,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "length",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "637:13:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "633:17:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 81,
+                  "nodeType": "ExpressionStatement",
+                  "src": "633:17:1"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 85,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 83,
+                          "name": "_threshold",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 63,
+                          "src": "668:10:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "<",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "id": 84,
+                          "name": "N",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 40,
+                          "src": "681:1:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "src": "668:14:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 82,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        118,
+                        119
+                      ],
+                      "referencedDeclaration": 118,
+                      "src": "660:7:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 86,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "660:23:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 87,
+                  "nodeType": "ExpressionStatement",
+                  "src": "660:23:1"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 90,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 88,
+                      "name": "t",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 42,
+                      "src": "693:1:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 89,
+                      "name": "_threshold",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 63,
+                      "src": "697:10:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "693:14:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 91,
+                  "nodeType": "ExpressionStatement",
+                  "src": "693:14:1"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 93,
+                        "name": "_group",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 61,
+                        "src": "737:6:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_memory_$dyn_memory_ptr",
+                          "typeString": "struct TOAD.EncryptedAccount memory[] memory"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 94,
+                        "name": "_threshold",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 63,
+                        "src": "745:10:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 95,
+                        "name": "_label",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 65,
+                        "src": "757:6:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_memory_$dyn_memory_ptr",
+                          "typeString": "struct TOAD.EncryptedAccount memory[] memory"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      ],
+                      "id": 92,
+                      "name": "GroupCreation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 58,
+                      "src": "723:13:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_array$_t_struct$_EncryptedAccount_$49_memory_$dyn_memory_ptr_$_t_uint256_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (struct TOAD.EncryptedAccount memory[] memory,uint256,string memory)"
+                      }
+                    },
+                    "id": 96,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "723:41:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 97,
+                  "nodeType": "EmitStatement",
+                  "src": "718:46:1"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 99,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "groupCreation",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 66,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 61,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 99,
+                  "src": "443:32:1",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_memory_$dyn_memory_ptr",
+                    "typeString": "struct TOAD.EncryptedAccount[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "contractScope": null,
+                      "id": 59,
+                      "name": "EncryptedAccount",
+                      "nodeType": "UserDefinedTypeName",
+                      "referencedDeclaration": 49,
+                      "src": "443:16:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_EncryptedAccount_$49_storage_ptr",
+                        "typeString": "struct TOAD.EncryptedAccount"
+                      }
+                    },
+                    "id": 60,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "443:18:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_storage_$dyn_storage_ptr",
+                      "typeString": "struct TOAD.EncryptedAccount[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 63,
+                  "name": "_threshold",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 99,
+                  "src": "486:15:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 62,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "486:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 65,
+                  "name": "_label",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 99,
+                  "src": "512:20:1",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 64,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "512:6:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "433:109:1"
+            },
+            "returnParameters": {
+              "id": 67,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "550:0:1"
+            },
+            "scope": 100,
+            "src": "411:360:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 101,
+        "src": "60:713:1"
+      }
+    ],
+    "src": "0:773:1"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/alexis/Documents/Stage Disc/TOAD/contracts/TOAD.sol",
+    "exportedSymbols": {
+      "TOAD": [
+        100
+      ]
+    },
+    "id": 101,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 34,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:1"
+      },
+      {
+        "id": 35,
+        "literals": [
+          "experimental",
+          "ABIEncoderV2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "25:33:1"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 100,
+        "linearizedBaseContracts": [
+          100
+        ],
+        "name": "TOAD",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 38,
+            "name": "has_been_used",
+            "nodeType": "VariableDeclaration",
+            "scope": 100,
+            "src": "130:33:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bool",
+              "typeString": "bool"
+            },
+            "typeName": {
+              "id": 36,
+              "name": "bool",
+              "nodeType": "ElementaryTypeName",
+              "src": "130:4:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bool",
+                "typeString": "bool"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "66616c7365",
+              "id": 37,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "bool",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "158:5:1",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_bool",
+                "typeString": "bool"
+              },
+              "value": "false"
+            },
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 40,
+            "name": "N",
+            "nodeType": "VariableDeclaration",
+            "scope": 100,
+            "src": "169:13:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 39,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "169:4:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 42,
+            "name": "t",
+            "nodeType": "VariableDeclaration",
+            "scope": 100,
+            "src": "188:13:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 41,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "188:4:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "TOAD.EncryptedAccount",
+            "id": 49,
+            "members": [
+              {
+                "constant": false,
+                "id": 44,
+                "name": "e_tag",
+                "nodeType": "VariableDeclaration",
+                "scope": 49,
+                "src": "259:13:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 43,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "259:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 46,
+                "name": "e_sk",
+                "nodeType": "VariableDeclaration",
+                "scope": 49,
+                "src": "282:12:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 45,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "282:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 48,
+                "name": "e_pk",
+                "nodeType": "VariableDeclaration",
+                "scope": 49,
+                "src": "304:12:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 47,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "304:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "EncryptedAccount",
+            "nodeType": "StructDefinition",
+            "scope": 100,
+            "src": "226:97:1",
+            "visibility": "public"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 58,
+            "name": "GroupCreation",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 57,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 52,
+                  "indexed": false,
+                  "name": "group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 58,
+                  "src": "349:24:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_memory_$dyn_memory_ptr",
+                    "typeString": "struct TOAD.EncryptedAccount[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "contractScope": null,
+                      "id": 50,
+                      "name": "EncryptedAccount",
+                      "nodeType": "UserDefinedTypeName",
+                      "referencedDeclaration": 49,
+                      "src": "349:16:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_EncryptedAccount_$49_storage_ptr",
+                        "typeString": "struct TOAD.EncryptedAccount"
+                      }
+                    },
+                    "id": 51,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "349:18:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_storage_$dyn_storage_ptr",
+                      "typeString": "struct TOAD.EncryptedAccount[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54,
+                  "indexed": false,
+                  "name": "threshold",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 58,
+                  "src": "375:14:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 53,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "375:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 56,
+                  "indexed": false,
+                  "name": "label",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 58,
+                  "src": "391:12:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 55,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "391:6:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "348:56:1"
+            },
+            "src": "329:76:1"
+          },
+          {
+            "body": {
+              "id": 98,
+              "nodeType": "Block",
+              "src": "550:221:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 70,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "UnaryOperation",
+                        "operator": "!",
+                        "prefix": true,
+                        "src": "577:14:1",
+                        "subExpression": {
+                          "argumentTypes": null,
+                          "id": 69,
+                          "name": "has_been_used",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 38,
+                          "src": "578:13:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          }
+                        },
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 68,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        118,
+                        119
+                      ],
+                      "referencedDeclaration": 118,
+                      "src": "569:7:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 71,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "569:23:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 72,
+                  "nodeType": "ExpressionStatement",
+                  "src": "569:23:1"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 75,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 73,
+                      "name": "has_been_used",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 38,
+                      "src": "602:13:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "hexValue": "74727565",
+                      "id": 74,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "618:4:1",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "true"
+                    },
+                    "src": "602:20:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 76,
+                  "nodeType": "ExpressionStatement",
+                  "src": "602:20:1"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 80,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 77,
+                      "name": "N",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 40,
+                      "src": "633:1:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 78,
+                        "name": "_group",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 61,
+                        "src": "637:6:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_memory_$dyn_memory_ptr",
+                          "typeString": "struct TOAD.EncryptedAccount memory[] memory"
+                        }
+                      },
+                      "id": 79,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "length",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "637:13:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "633:17:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 81,
+                  "nodeType": "ExpressionStatement",
+                  "src": "633:17:1"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 85,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 83,
+                          "name": "_threshold",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 63,
+                          "src": "668:10:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "<",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "id": 84,
+                          "name": "N",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 40,
+                          "src": "681:1:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "src": "668:14:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 82,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        118,
+                        119
+                      ],
+                      "referencedDeclaration": 118,
+                      "src": "660:7:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 86,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "660:23:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 87,
+                  "nodeType": "ExpressionStatement",
+                  "src": "660:23:1"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 90,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 88,
+                      "name": "t",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 42,
+                      "src": "693:1:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 89,
+                      "name": "_threshold",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 63,
+                      "src": "697:10:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "693:14:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 91,
+                  "nodeType": "ExpressionStatement",
+                  "src": "693:14:1"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 93,
+                        "name": "_group",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 61,
+                        "src": "737:6:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_memory_$dyn_memory_ptr",
+                          "typeString": "struct TOAD.EncryptedAccount memory[] memory"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 94,
+                        "name": "_threshold",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 63,
+                        "src": "745:10:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 95,
+                        "name": "_label",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 65,
+                        "src": "757:6:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_memory_$dyn_memory_ptr",
+                          "typeString": "struct TOAD.EncryptedAccount memory[] memory"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      ],
+                      "id": 92,
+                      "name": "GroupCreation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 58,
+                      "src": "723:13:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_array$_t_struct$_EncryptedAccount_$49_memory_$dyn_memory_ptr_$_t_uint256_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (struct TOAD.EncryptedAccount memory[] memory,uint256,string memory)"
+                      }
+                    },
+                    "id": 96,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "723:41:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 97,
+                  "nodeType": "EmitStatement",
+                  "src": "718:46:1"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 99,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "groupCreation",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 66,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 61,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 99,
+                  "src": "443:32:1",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_memory_$dyn_memory_ptr",
+                    "typeString": "struct TOAD.EncryptedAccount[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "contractScope": null,
+                      "id": 59,
+                      "name": "EncryptedAccount",
+                      "nodeType": "UserDefinedTypeName",
+                      "referencedDeclaration": 49,
+                      "src": "443:16:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_EncryptedAccount_$49_storage_ptr",
+                        "typeString": "struct TOAD.EncryptedAccount"
+                      }
+                    },
+                    "id": 60,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "443:18:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_struct$_EncryptedAccount_$49_storage_$dyn_storage_ptr",
+                      "typeString": "struct TOAD.EncryptedAccount[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 63,
+                  "name": "_threshold",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 99,
+                  "src": "486:15:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 62,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "486:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 65,
+                  "name": "_label",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 99,
+                  "src": "512:20:1",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 64,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "512:6:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "433:109:1"
+            },
+            "returnParameters": {
+              "id": 67,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "550:0:1"
+            },
+            "scope": 100,
+            "src": "411:360:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 101,
+        "src": "60:713:1"
+      }
+    ],
+    "src": "0:773:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
+  },
+  "networks": {
+    "5777": {
+      "events": {
+        "0x82672eb5e6c44c55e91280a329a9e88093477274f1e0249369f0633c0dfb265d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "e_tag",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "e_sk",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "e_pk",
+                  "type": "uint256"
+                }
+              ],
+              "indexed": false,
+              "internalType": "struct TOAD.EncryptedAccount[]",
+              "name": "group",
+              "type": "tuple[]"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "threshold",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "label",
+              "type": "string"
+            }
+          ],
+          "name": "GroupCreation",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xB21d06B32Db32c4756f67F172DcC13062F670544",
+      "transactionHash": "0xd91c8b52a06c7a147e70d5f00e0bd50e97bf30f1eacbe5c1cbd683190766fbb7"
+    }
+  },
+  "schemaVersion": "3.3.1",
+  "updatedAt": "2021-02-03T09:34:22.559Z",
+  "networkType": "ethereum",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
