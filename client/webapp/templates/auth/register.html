@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+
+{% block navbar %}<navbar tab="register"></navbar>{% endblock %}
+
+{% block section %}
+<div class="d-flex justify-content-center mt-3">
+    <form method='POST' class='form-group'>
+        <label for="username">Username</label>
+        <input class="form-control" name="username" id="username" required>
+        <label for="private_key">Private key</label>
+        <input class="form-control" name="private_key" id="private_key" required>
+        <label for="account address">Account address</label>
+        <input class="form-control" name="account_address" id="private_key" required>
+        <input class="btn btn-primary m-3" type="submit" value="Register">
+    </form>
+</div>
+{% endblock %}
