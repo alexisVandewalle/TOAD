@@ -1,11 +1,9 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block title %}Log in{% endblock %}
 
-{% block navbar %}<navbar tab="login"></navbar>{% endblock %}
-
 {% block section %}
-<div class="d-flex justify-content-center mt-3">
+<div class="container col-8 m-3">
     <form method='POST' class='form-group'>
         <label for="username">Username</label>
         <input class="form-control" name="username" id="username" required>

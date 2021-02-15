@@ -30,4 +30,7 @@ def create_app(test_config=None):
     from . import auth
     app.register_blueprint(auth.bp)
 
+    from . import toad
+    app.register_blueprint(toad.bp)
+
     return app

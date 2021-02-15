@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Encrypted files{% endblock %}
+{% block section %}
+{% if g.user %}
+<div class="container m-3">
+    <ul class="list-group">
+        <li class="list-group-item"><b>Info about user:</b></li>
+        <li class="list-group-item"><b>username:</b> {{ g.user['username'] }}</li>
+        <li class="list-group-item"><b>private key:</b> {{ g.user['private_key'] }}</li>
+        <li class="list-group-item"><b>account address:</b> {{ g.user['account_address'] }}</li>
+    </ul>
+</div>
+{% endif %}
+
+{% endblock %}
