@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Group creation{% endblock %}
+
+
+{% block section %}
+<form class="form-group  col-8 container p-3" method="POST">
+  <select multiple for="group" class="form-control" id="group-selection-form">
+    {% for account in accounts %}
+    <option>{{ account }}</option>
+    {% endfor %}
+  </select>
+  <input class="btn btn-primary m-3" type="submit" value="Create Group">
+</form>
+{% endblock %}

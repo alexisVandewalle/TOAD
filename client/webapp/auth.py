@@ -10,6 +10,8 @@ from webapp.db import get_db
 from eth_keys import keys
 from eth_utils.exceptions import ValidationError
 
+from webapp.Crypto_utils import compute_public_key
+
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/register', methods=('GET', 'POST'))
@@ -52,6 +54,11 @@ def register():
                 'INSERT INTO user (username, private_key, account_address) VALUES (?, ?, ?)',
                 (username, private_key, account_address)
             )
+            pk_x, pk_y = compute_public_key(private_key)
+            db.execute(
+                "INSERT INTO eth_public_key (account_address, pk_x, pk_y) VALUES (?,?,?)",
+                [account_address, hex(pk_x), hex(pk_y)]
+            )
             db.commit()
             return redirect(url_for('auth.login'))
 
@@ -62,7 +69,7 @@ def register():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     """Login a user in the webapp.
-    
+
     Returns:
         The page index if login succeed and the login page else
     """

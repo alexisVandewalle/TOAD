@@ -16,13 +16,13 @@ class Client:
         self.contract_address = contract_address
         self.host = host
         self.port = port
-        
+
         self.w3 = Web3(Web3.HTTPProvider(self.host+':'+self.port))
         self.connected = True
         if(self.w3.isConnected() == False):
             self.connected = False
             print('ERREUR: connection to the node failed')
-        
+
         with open('../build/contracts/TOAD.json','r') as file_abi:
             json_file = file_abi.read()
             abi = json.loads(json_file)['abi']
@@ -46,16 +46,16 @@ class Client:
     def get_public_info():
         pass
 
-    def group_creation(user_address, threshold, label):
+    def group_creation(user_address, threshold):
 
         pass
-    
+
     def publish_pk():
         pass
 
     def publish_share():
         pass
-    
+
     def register_group_key():
         pass
 

@@ -20,15 +20,16 @@
         <ul class="navbar-nav">
             <li><a class="nav-link" href="{{ url_for('toad.index') }} ">Home</a></li>
             {% if g.user %}
+            <li><a class="nav-link" href="{{ url_for('toad.group_creation') }} ">Group creation</a></li>
             <li><a class="nav-link" href="{{ url_for('auth.logout') }} ">Log out</a></li>
             {% else %}
             <li><a class="nav-link" href="{{ url_for('auth.login') }} ">Log in</a></li>
             <li><a class="nav-link" href="{{ url_for('auth.register') }} ">Register</a></li>
             {% endif %}
         </ul>
-      
+
     </nav>
-    
+
     {% for message in get_flashed_messages() %}
     <div class="alert alert-danger">{{ message }}</div>
   {% endfor %}

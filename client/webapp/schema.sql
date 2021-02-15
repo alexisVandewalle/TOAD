@@ -1,8 +1,15 @@
 DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS eth_public_key;
 
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
   private_key TEXT UNIQUE NOT NULL,
   account_address TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE eth_public_key (
+  account_address TEXT UNIQUE NOT NULL,
+  pk_x TEXT UNIQUE NOT NULL,
+  pk_y TEXT UNIQUE NOT NULL
 );
