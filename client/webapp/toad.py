@@ -20,12 +20,16 @@ def index():
 @bp.route('/group_creation/', methods=['GET', 'POST'])
 @login_required
 def group_creation():
-    # TODO handle form submission
     db = get_db()
     accounts = db.execute(
         "SELECT account_address FROM eth_public_key"
     ).fetchall()
     accounts = [row['account_address'] for row in accounts]
+
+    if request.method == 'POST':
+        selected_accounts = request.form.getlist('accounts')
+        g.client.group_creation(selected_accounts)
+
     return render_template('toad/group_creation.html', accounts=accounts)
 
 @bp.before_request
@@ -41,8 +45,8 @@ def blockchain_connect():
 
     finally call update_db the database (see :meth:`webapp.auth.update_db`).
     """
-    contract_address = '0xB21d06B32Db32c4756f67F172DcC13062F670544'
-    port = '9545'
+    contract_address = '0xFB548F8a271Ee8ad8A6bD2e1d0D2425eC131D47f'
+    port = '8545'
     g.client = Client(contract_address, port)
     user_id = session.get('user_id')
 

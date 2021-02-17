@@ -5,7 +5,7 @@
 
 {% block section %}
 <form class="form-group  col-8 container p-3" method="POST">
-  <select multiple for="group" class="form-control" id="group-selection-form">
+  <select multiple for="group" class="form-control" id="group-selection" name="accounts">
     {% for account in accounts %}
     <option>{{ account }}</option>
     {% endfor %}

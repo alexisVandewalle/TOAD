@@ -1,5 +1,7 @@
 from web3 import Web3
 import json
+import webapp.Crypto_utils as cru
+from webapp.db import get_db
 
 class Client:
 
@@ -22,6 +24,8 @@ class Client:
         if(self.w3.isConnected() == False):
             self.connected = False
             print('ERREUR: connection to the node failed')
+        else:
+            print('connection to the node succeeded')
 
         with open('../build/contracts/TOAD.json','r') as file_abi:
             json_file = file_abi.read()
@@ -46,9 +50,31 @@ class Client:
     def get_public_info():
         pass
 
-    def group_creation(user_address, threshold):
+    def get_public_keys(self, selected_accounts):
+        db = get_db()
+        placeholders = ', '.join('?' for account in selected_accounts)
+        public_keys = db.execute(
+            "SELECT * from eth_public_key WHERE account_address IN (%s)"%placeholders,
+            selected_accounts
+        ).fetchall()
+        return [(int(row['pk_x'],0), int(row['pk_y'],0)) for row in public_keys]
 
-        pass
+    def group_creation(self, selected_accounts):
+        threshold = len(selected_accounts)//2
+        public_keys = self.get_public_keys(selected_accounts)
+        encrypted_account = cru.encrypt_accounts(self.private_key, public_keys)
+        print(encrypted_account)
+        transaction = self.contract.functions.groupCreation(
+            encrypted_account, threshold
+            ).buildTransaction(
+            {
+                'chainId':1,
+                'gas':200000,
+                'nonce': self.w3.eth.getTransactionCount(self.account)
+            }
+        )
+        signed_tx = self.w3.eth.account.signTransaction(transaction, self.private_key)
+        txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
 
     def publish_pk():
         pass

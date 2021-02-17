@@ -17,9 +17,9 @@ contract TOAD{
 
     ///structures
     struct EncryptedAccount{
-        uint256 e_tag;
-        uint256 e_sk;
-        uint256 e_pk;
+        bytes e_sk;
+        bytes tag;
+        bytes nonce;
     }
 
     struct GroupKeyWithId{
@@ -28,7 +28,7 @@ contract TOAD{
     }
 
     ///events
-    event GroupCreation(EncryptedAccount[] group, uint threshold, string label);
+    event GroupCreation(EncryptedAccount[] group, uint threshold);
     event PublicKey(uint256[2] public_key, uint anonymous_id);
     event Share(uint256[] shares, uint round);
     event GroupKey(uint256[2] gpk, uint anonymous_id, uint round);
@@ -38,11 +38,10 @@ contract TOAD{
     event GenerateNewKeys(uint round);
 
     function groupCreation(
-        EncryptedAccount[] memory _group, 
-        uint _threshold, 
-        string memory _label
+        EncryptedAccount[] memory _group,
+        uint _threshold
         ) public {
-        
+
         require(!has_been_used,'group already created');
         has_been_used = true;
 
@@ -52,7 +51,7 @@ contract TOAD{
         public_account = msg.sender;
         round = 0;
 
-        emit GroupCreation(_group, _threshold, _label);
+        emit GroupCreation(_group, _threshold);
     }
 
     function publish_pk(uint256[2] memory _public_key, uint _anonymous_id) public{
@@ -67,8 +66,8 @@ contract TOAD{
 
     function register_group_key(uint256[2] memory _gpk, uint _anonymous_id, uint _round)public{
         require(msg.sender == public_account,'only user who have access to the public account can call this function');
-        
-        emit GroupKey(_gpk, _anonymous_id, _round); 
+
+        emit GroupKey(_gpk, _anonymous_id, _round);
 
         if(_round == 0){
             nb_group_key +=1;
