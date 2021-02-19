@@ -63,13 +63,12 @@ class Client:
         threshold = len(selected_accounts)//2
         public_keys = self.get_public_keys(selected_accounts)
         encrypted_account = cru.encrypt_accounts(self.private_key, public_keys)
-        print(encrypted_account)
         transaction = self.contract.functions.groupCreation(
             encrypted_account, threshold
             ).buildTransaction(
             {
                 'chainId':1,
-                'gas':200000,
+                'gas':400000,
                 'nonce': self.w3.eth.getTransactionCount(self.account)
             }
         )
