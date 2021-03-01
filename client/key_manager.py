@@ -111,12 +111,14 @@ class BlockchainClient:
         nonce = encrypted_account_eth[2]
         aes = AES.new(sym_key, AES.MODE_CCM, nonce=nonce)
         try:
-             self.public_account_private_key = str(aes.decrypt_and_verify(e_sk, tag))
+             self.public_account_private_key = aes.decrypt_and_verify(e_sk, tag).decode()
+             print(self.public_account_private_key)
              return True
         except ValueError:
             return False
 
     def generate_anonymous_id(self):
+        #TODO split la fonction en deux pour generer tpki et si separemment
         ui = getrandbits(64)
         self.tp_key_list.append((ECC.generate(curve='P-256'),ui))
         self.si = randrange(CURVE_ORDER)
@@ -128,6 +130,21 @@ class BlockchainClient:
         coeffs = [self.si,]+coeffs
         poly = IntPoly(coeffs)
 
+    def publish_tpk(self,round):
+        #TODO modifier le contrat et ajouter le numero de round
+        transaction = self.contract.functions.publish_pk(
+            [int(coord) for coord in self.tp_key_list[round][0].pointQ.xy],
+            self.tp_key_list[round][1]
+            ).buildTransaction(
+            {
+                'chainId':1,
+                'gas':1000000,
+                'nonce': self.w3.eth.getTransactionCount(self.public_account)
+            }
+        )
+        signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
+        txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+
 ## main program
 if __name__=="__main__":
     host, port, contract_address, private_key = parse_args()
@@ -137,6 +154,7 @@ if __name__=="__main__":
     ev_group_creation = filter_group_creation.get_all_entries()
     if(len(ev_group_creation)>=1):
         client.get_contract_Info()
-        client.decrypt_public_account(0)
+        client.decrypt_public_account(2)
         client.generate_anonymous_id()
         client.generate_rand_poly()
+        client.publish_tpk(0)
