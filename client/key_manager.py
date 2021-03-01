@@ -68,6 +68,7 @@ class BlockchainClient:
         self.port = port
 
         self.tp_key_list = []
+        self.tp_anon_id = {}
 
         self.w3 = Web3(Web3.HTTPProvider(self.host+':'+self.port))
         self.connected = True
@@ -112,7 +113,6 @@ class BlockchainClient:
         aes = AES.new(sym_key, AES.MODE_CCM, nonce=nonce)
         try:
              self.public_account_private_key = aes.decrypt_and_verify(e_sk, tag).decode()
-             print(self.public_account_private_key)
              return True
         except ValueError:
             return False
@@ -145,6 +145,18 @@ class BlockchainClient:
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
 
+    def retrieve_tpki_ui(self, round):
+        #TODO ajouter le numero de round a l'evenement
+        filter_tpk = self.contract.events.PublicKey.createFilter(fromBlock=0)#, argument_filters={"round":round})
+        events = filter_tpk.get_all_entries()
+        if len(events) == 1:#self.group_size:
+            self.tp_anon_id[round] = []
+            for event in events:
+                self.tp_anon_id[round].append(event['args']['anonymous_id'])
+                coord_ecc_point = event['args']['public_key']
+                self.tp_anon_id[round].append(ECC.EccPoint(coord_ecc_point[0], coord_ecc_point[1]))
+            print(self.tp_anon_id)
+
 ## main program
 if __name__=="__main__":
     host, port, contract_address, private_key = parse_args()
@@ -157,4 +169,5 @@ if __name__=="__main__":
         client.decrypt_public_account(2)
         client.generate_anonymous_id()
         client.generate_rand_poly()
-        client.publish_tpk(0)
+        #client.publish_tpk(0)
+        client.retrieve_tpki_ui(0)
