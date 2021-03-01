@@ -57,7 +57,7 @@ contract TOAD{
             encrypted_public_account.push(_group[i]);
         }
 
-        emit GroupCreation();
+        emit GroupCreation(msg.sender);
     }
 
     function get_encrypted_public_account(uint i) public view returns (bytes[3] memory){

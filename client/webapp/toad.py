@@ -47,7 +47,7 @@ def blockchain_connect():
 
     finally call update_db the database (see :meth:`webapp.auth.update_db`).
     """
-    contract_address = '0xD833215cBcc3f914bD1C9ece3EE7BF8B14f841bb'
+    contract_address = '0xC1C062DEdC0F90E3759a65207E741c5CAd6f98F2'
     port = '8545'
     g.client = Client(contract_address, port)
     user_id = session.get('user_id')
