@@ -69,6 +69,7 @@ class BlockchainClient:
 
         self.tp_key_list = []
         self.tp_anon_id = {}
+        self.poly_dict = {}
 
         self.w3 = Web3(Web3.HTTPProvider(self.host+':'+self.port))
         self.connected = True
@@ -117,18 +118,19 @@ class BlockchainClient:
         except ValueError:
             return False
 
-    def generate_anonymous_id(self):
-        #TODO split la fonction en deux pour generer tpki et si separemment
-        ui = getrandbits(64)
-        self.tp_key_list.append((ECC.generate(curve='P-256'),ui))
+    def generate_si(self):
         self.si = randrange(CURVE_ORDER)
         self.h_si_2 = multiply(H2,self.si)
         self.h_si_1 = multiply(H1,self.si)
 
-    def generate_rand_poly(self):
+    def generate_anonymous_id(self):
+        ui = getrandbits(64)
+        self.tp_key_list.append((ECC.generate(curve='P-256'),ui))
+
+    def generate_rand_poly(self, round):
         coeffs = [randrange(CURVE_ORDER) for i in range(self.threshold)]
         coeffs = [self.si,]+coeffs
-        poly = IntPoly(coeffs)
+        self.poly_dict[round] = IntPoly(coeffs)
 
     def publish_tpk(self,round):
         #TODO modifier le contrat et ajouter le numero de round
@@ -149,13 +151,20 @@ class BlockchainClient:
         #TODO ajouter le numero de round a l'evenement
         filter_tpk = self.contract.events.PublicKey.createFilter(fromBlock=0)#, argument_filters={"round":round})
         events = filter_tpk.get_all_entries()
-        if len(events) == 1:#self.group_size:
+        if len(events) == 1:
             self.tp_anon_id[round] = []
             for event in events:
-                self.tp_anon_id[round].append(event['args']['anonymous_id'])
+                uj = event['args']['anonymous_id']
                 coord_ecc_point = event['args']['public_key']
-                self.tp_anon_id[round].append(ECC.EccPoint(coord_ecc_point[0], coord_ecc_point[1]))
-            print(self.tp_anon_id)
+                tpkj = ECC.EccPoint(coord_ecc_point[0], coord_ecc_point[1])
+                self.tp_anon_id[round].append({'uj':uj,'tpkj':tpkj})
+
+            self.tp_anon_id[round] = sorted(self.tp_anon_id[round], key=lambda k:k['uj'])
+
+    def evaluate_shares(self, round):
+        poly = self.poly_dict[round]
+        uj_list = [d['uj'] for d in self.tp_anon_id[round]]
+        return [self.poly_dict[round].evaluate(uj) for uj in uj_list]
 
 ## main program
 if __name__=="__main__":
@@ -168,6 +177,8 @@ if __name__=="__main__":
         client.get_contract_Info()
         client.decrypt_public_account(2)
         client.generate_anonymous_id()
-        client.generate_rand_poly()
+        client.generate_si()
+        client.generate_rand_poly(0)
         #client.publish_tpk(0)
         client.retrieve_tpki_ui(0)
+        print(client.evaluate_and_encrypt_shares(0))
