@@ -2,10 +2,16 @@ from web3 import Web3
 import json
 import sys, getopt
 import sqlite3
+
 from Crypto.PublicKey import ECC
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto.Protocol.KDF import HKDF
+from Crypto.Random.random import getrandbits, randrange
+from py_ecc.optimized_bn128 import curve_order as CURVE_ORDER
+from crypto_utils import H1, H2
+from py_ecc.optimized_bn128 import add, multiply, neg, normalize, pairing, is_on_curve
+from crypto_utils import IntPoly
 
 
 def get_db():
@@ -61,6 +67,8 @@ class BlockchainClient:
         self.host = host
         self.port = port
 
+        self.tp_key_list = []
+
         self.w3 = Web3(Web3.HTTPProvider(self.host+':'+self.port))
         self.connected = True
         if(self.w3.isConnected() == False):
@@ -108,9 +116,20 @@ class BlockchainClient:
         except ValueError:
             return False
 
+    def generate_anonymous_id(self):
+        ui = getrandbits(64)
+        self.tp_key_list.append((ECC.generate(curve='P-256'),ui))
+        self.si = randrange(CURVE_ORDER)
+        self.h_si_2 = multiply(H2,self.si)
+        self.h_si_1 = multiply(H1,self.si)
+
+    def generate_rand_poly(self):
+        coeffs = [randrange(CURVE_ORDER) for i in range(self.threshold)]
+        coeffs = [self.si,]+coeffs
+        poly = IntPoly(coeffs)
 
 ## main program
-if __name__=="main":
+if __name__=="__main__":
     host, port, contract_address, private_key = parse_args()
     client = BlockchainClient(contract_address, private_key, port, host)
 
@@ -119,3 +138,5 @@ if __name__=="main":
     if(len(ev_group_creation)>=1):
         client.get_contract_Info()
         client.decrypt_public_account(0)
+        client.generate_anonymous_id()
+        client.generate_rand_poly()
