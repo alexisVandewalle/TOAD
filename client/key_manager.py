@@ -2,6 +2,7 @@ from web3 import Web3
 import json
 import sys, getopt
 import sqlite3
+import time
 
 from Crypto.PublicKey import ECC
 from Crypto.Cipher import AES
@@ -52,7 +53,7 @@ class EncryptedAccount:
         self.tag = account[1]
         self.nonce = account[2]
 
-class BlockchainClient:
+class KeyManager:
     def __init__(self, contract_address, private_key, port='8545', host='http://127.0.0.1'):
         """
         Connect the user to the ethereum blockchain and espacially to
@@ -69,6 +70,7 @@ class BlockchainClient:
         self.port = port
 
         self.is_member = False
+        self.nb_message_received = 0
 
         self.tp_key_list = []
         self.tp_anon_id = {}
@@ -91,8 +93,15 @@ class BlockchainClient:
 
         self.contract = self.w3.eth.contract(contract_address, abi=abi)
 
+    def check_group_creation(self):
+        filter_group_creation = self.contract.events.GroupCreation.createFilter(fromBlock=0)
+        ev_group_creation = filter_group_creation.get_all_entries()
+        if len(ev_group_creation)==1: return True
+        else: return False
+
     def get_contract_Info(self):
         # La clé publique de l'utilisateur doit etre dans la base de donnée
+        # le group doit avoir ete cree
         self.group_size = self.contract.caller().N()
         self.threshold = self.contract.caller().t()
         self.public_account = self.contract.caller().public_account()
@@ -166,8 +175,9 @@ class BlockchainClient:
     def retrieve_tpki_ui(self, round):
         filter_tpk = self.contract.events.PublicKey.createFilter(fromBlock=0, argument_filters={"round":round})
         events = filter_tpk.get_all_entries()
+        print("number of temporary ids:", len(events))
         # TODO changer le 1 en group size
-        if len(events) == 1:
+        if len(events) == self.group_size:
             self.tp_anon_id[round] = []
             for event in events:
                 uj = event['args']['anonymous_id']
@@ -176,6 +186,9 @@ class BlockchainClient:
                 self.tp_anon_id[round].append({'uj':uj,'tpkj':tpkj})
 
             self.tp_anon_id[round] = sorted(self.tp_anon_id[round], key=lambda k:k['uj'])
+            return True
+
+        return False
 
     @member_required
     def evaluate_shares(self, round):
@@ -193,7 +206,6 @@ class BlockchainClient:
             tpkj = tpkj_list[i]['tpkj']
             key_point = tpkj*tski
             result.append(encrypt_int(shares[i], key_point))
-
         transaction = self.contract.functions.publish_share(
             result,
             round,
@@ -213,16 +225,19 @@ class BlockchainClient:
         filter_tpk = self.contract.events.Share.createFilter(fromBlock=0, argument_filters={"round":round})
         events = filter_tpk.get_all_entries()
         # TODO changer le 1 en group size
-        if len(events) == 1:
+        print("number of shares:",len(events))
+        if len(events) == self.group_size:
             self.share_dict[round]=[]
             for event in events:
                 list_share = event['args']['shares'] + [event['args']['anonymous_id'],]
                 self.share_dict[round].append(list_share)
             self.share_dict[round].sort(key=lambda k:k[-1])
+            return True
+
+        return False
 
     def __find_rank(self, round):
-        #my_ui = self.tp_key_list[round][1]
-        my_ui = 14819965287647311834
+        my_ui = self.tp_key_list[round][1]
         tp_id = self.tp_anon_id[round]
         for i in range(len(tp_id)):
             if tp_id[i]['uj'] == my_ui:
@@ -231,15 +246,14 @@ class BlockchainClient:
     @member_required
     def decrypt_my_shares(self, round):
         # TODO enlever la zone commentée utilisée pour le test
-        #tski = self.tp_key_list[round][0].d
-        tski = 101556918311806889347608112229875415018165084929375640946667848539180553894032
+        tski = self.tp_key_list[round][0].d
         column_id = self.__find_rank(round)
         list_shares = self.share_dict[round]
         my_shares = [row[column_id] for row in list_shares]
         fj_ui=[]
 
-        for share in my_shares:
-            key_point = self.tp_anon_id[round][column_id]['tpkj']*tski
+        for i, share in enumerate(my_shares):
+            key_point = self.tp_anon_id[round][i]['tpkj']*tski
             fj_ui.append(decrypt_int(share, key_point))
 
         return fj_ui
@@ -268,36 +282,81 @@ class BlockchainClient:
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
 
+    def check_new_message(self):
+        filter_new_msg = self.contract.events.NewMessage.createFilter(fromBlock=0, argument_filters={"round":round})
+        events = filter_new_msg.get_all_entries()
+        if len(events)>self.nb_message_received:
+            nb_message_received +=1
+            return True
+        return False
+
 ## main program
 if __name__=="__main__":
     host, port, contract_address, private_key = parse_args()
-    client = BlockchainClient(contract_address, private_key, port, host)
+    client = KeyManager(contract_address, private_key, port, host)
 
-    filter_group_creation = client.contract.events.GroupCreation.createFilter(fromBlock=0)
-    ev_group_creation = filter_group_creation.get_all_entries()
 
-    if(len(ev_group_creation)>=1):
-        client.get_contract_Info()
-        print("public account:",client.decrypt_public_account(1))
-        print("group_size:", client.group_size)
-        print("threshold:", client.threshold)
-        client.generate_anonymous_id()
+    while(True):
+        if client.check_group_creation():
+            client.get_contract_Info()
 
-        print("my temp key list",client.tp_key_list)
+            for i in range(client.group_size):
+                if client.decrypt_public_account(i): break
 
-        client.generate_si()
-        print("my si:", client.si)
+            round = 0
 
-        client.generate_rand_poly(0)
-        print("my_poly", client.poly_dict)
+            client.generate_anonymous_id()
+            client.generate_si()
+            client.generate_rand_poly(round)
+            client.publish_tpk(round)
 
-        #client.publish_tpk(0)
-        client.retrieve_tpki_ui(0)
+            print("retrieving temporary id")
+            while not(client.retrieve_tpki_ui(round)):
+                time.sleep(5)
 
-        shares = client.evaluate_shares(0)
-        print("shares for round 0",shares)
-        #client.encrypt_shares(0,shares)
-        client.retrieve_shares(0)
-        fj_ui = client.decrypt_my_shares(0)
-        client.compute_group_keys(0,fj_ui)
-        #client.publish_group_key(0)
+            print("evaluating shares")
+            shares = client.evaluate_shares(round)
+
+            print("encrypting shares")
+            client.encrypt_shares(round,shares)
+
+            print("retrieving shares")
+            while not(client.retrieve_shares(round)):
+                time.sleep(5)
+
+            print("decrypting shares")
+            fj_ui = client.decrypt_my_shares(round)
+
+            print("computing group key")
+            client.compute_group_keys(0,fj_ui)
+            print("publishing group key")
+            client.publish_group_key(0)
+
+            while(True):
+                if(client.check_new_message()):
+                    round+=1
+                    client.generate_anonymous_id()
+                    client.generate_rand_poly(round)
+                    client.publish_tpk(round)
+                    print("retrieving temporary id")
+                    while not(client.retrieve_tpki_ui(round)):
+                        time.sleep(5)
+
+                    print("evaluating shares")
+                    shares = client.evaluate_shares(round)
+                    print("encrypting shares")
+                    client.encrypt_shares(round,shares)
+
+                    print("retrieving shares")
+                    while not(client.retrieve_shares(round)):
+                        time.sleep(5)
+                    print(client.share_dict[round])
+                    print("decrypting shares")
+                    fj_ui = client.decrypt_my_shares(round)
+                    print("computing group key")
+                    client.compute_group_keys(0,fj_ui)
+                    print("publishing group key")
+                    client.publish_group_key(0)
+                time.sleep(5)
+
+        time.sleep(5)
