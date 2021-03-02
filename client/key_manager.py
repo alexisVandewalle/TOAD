@@ -11,7 +11,7 @@ from Crypto.Random.random import getrandbits, randrange
 from py_ecc.optimized_bn128 import curve_order as CURVE_ORDER
 from crypto_utils import H1, H2
 from py_ecc.optimized_bn128 import add, multiply, neg, normalize, pairing, is_on_curve
-from crypto_utils import IntPoly, encrypt_int
+from crypto_utils import IntPoly, encrypt_int, decrypt_int
 
 
 def get_db():
@@ -70,6 +70,7 @@ class BlockchainClient:
         self.tp_key_list = []
         self.tp_anon_id = {}
         self.poly_dict = {}
+        self.share_dict = {}
 
         self.w3 = Web3(Web3.HTTPProvider(self.host+':'+self.port))
         self.connected = True
@@ -135,7 +136,6 @@ class BlockchainClient:
         self.poly_dict[round] = IntPoly(coeffs)
 
     def publish_tpk(self,round):
-        #TODO modifier le contrat et ajouter le numero de round
         transaction = self.contract.functions.publish_pk(
             [int(coord) for coord in self.tp_key_list[round][0].pointQ.xy],
             self.tp_key_list[round][1],
@@ -151,9 +151,9 @@ class BlockchainClient:
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
 
     def retrieve_tpki_ui(self, round):
-        #TODO ajouter le numero de round a l'evenement
         filter_tpk = self.contract.events.PublicKey.createFilter(fromBlock=0, argument_filters={"round":round})
         events = filter_tpk.get_all_entries()
+        # TODO changer le 1 en group size
         if len(events) == 1:
             self.tp_anon_id[round] = []
             for event in events:
@@ -181,7 +181,8 @@ class BlockchainClient:
 
         transaction = self.contract.functions.publish_share(
             result,
-            round
+            round,
+            self.tp_key_list[round][1]
             ).buildTransaction(
             {
                 'chainId':1,
@@ -191,6 +192,41 @@ class BlockchainClient:
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+
+    def retrieve_shares(self, round):
+        filter_tpk = self.contract.events.Share.createFilter(fromBlock=0, argument_filters={"round":round})
+        events = filter_tpk.get_all_entries()
+        # TODO changer le 1 en group size
+        if len(events) == 1:
+            self.share_dict[round]=[]
+            for event in events:
+                list_share = event['args']['shares'] + [event['args']['anonymous_id'],]
+                self.share_dict[round].append(list_share)
+            self.share_dict[round].sort(key=lambda k:k[-1])
+
+    def find_rank(self, round):
+        #my_ui = self.tp_key_list[round][1]
+        my_ui = 14819965287647311834
+        tp_id = self.tp_anon_id[round]
+        for i in range(len(tp_id)):
+            if tp_id[i]['uj'] == my_ui:
+                return i
+
+    def decrypt_my_shares(self, round):
+        # TODO enlever la zone commentée utilisée pour le test
+        #tski = self.tp_key_list[round][0].d
+        tski = 101556918311806889347608112229875415018165084929375640946667848539180553894032
+        column_id = self.find_rank(round)
+        list_shares = self.share_dict[round]
+        my_shares = [row[column_id] for row in list_shares]
+        fj_ui=[]
+
+        for share in my_shares:
+            key_point = self.tp_anon_id[round][column_id]['tpkj']*tski
+            fj_ui.append(decrypt_int(share, key_point))
+
+        return fj_ui
+
 
 ## main program
 if __name__=="__main__":
@@ -202,11 +238,24 @@ if __name__=="__main__":
 
     if(len(ev_group_creation)>=1):
         client.get_contract_Info()
-        print(client.decrypt_public_account(1))
+        print("public account:",client.decrypt_public_account(1))
+        print("group_size:", client.group_size)
+        print("threshold:", client.threshold)
         client.generate_anonymous_id()
+
+        print("my temp key list",client.tp_key_list)
+
         client.generate_si()
+        print("my si:", client.si)
+
         client.generate_rand_poly(0)
+        print("my_poly", client.poly_dict)
+
         #client.publish_tpk(0)
         client.retrieve_tpki_ui(0)
+
         shares = client.evaluate_shares(0)
-        client.encrypt_shares(0,shares)
+        print("shares for round 0",shares)
+        #client.encrypt_shares(0,shares)
+        client.retrieve_shares(0)
+        print(client.decrypt_my_shares(0))

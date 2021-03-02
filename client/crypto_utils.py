@@ -38,3 +38,9 @@ def encrypt_int(x, key_point):
     salsa20 = Salsa20.new(sym_key, bytes(8))
     enc_x = salsa20.encrypt(hex(x).encode())
     return enc_x
+
+def decrypt_int(x, key_point):
+    sym_key = HKDF((str(key_point.x)+str(key_point.y)).encode(),32,b'',SHA256)
+    salsa20 = Salsa20.new(sym_key, bytes(8))
+    dec_x = int(salsa20.decrypt(x).decode(),0)
+    return dec_x
