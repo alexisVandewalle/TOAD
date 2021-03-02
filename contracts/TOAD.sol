@@ -30,8 +30,8 @@ contract TOAD{
     }
 
     ///events
-    event PublicKey(uint256[2] public_key, uint anonymous_id);
-    event Share(uint256[] shares, uint round);
+    event PublicKey(uint256[2] public_key, uint anonymous_id, uint round);
+    event Share(bytes[] shares, uint round);
     event GroupKey(uint256[2] gpk, uint anonymous_id, uint round);
     event MasterGroupKeyAvailable();
     event ShareForDec(address sender, uint id, uint256[4] share, uint256[2] proof);
@@ -67,14 +67,14 @@ contract TOAD{
                 encrypted_public_account[i].nonce];
     }
 
-    function publish_pk(uint256[2] memory _public_key, uint _anonymous_id) public{
+    function publish_pk(uint256[2] memory _public_key, uint _anonymous_id,uint _round) public{
         require(msg.sender == public_account, 'only user who have access to the public account can call this function');
-        emit PublicKey(_public_key, _anonymous_id);
+        emit PublicKey(_public_key, _anonymous_id, _round);
     }
 
-    function publish_share(uint256[] memory _shares) public{
+    function publish_share(bytes[] memory _shares, uint _round) public{
         require(msg.sender == public_account, 'only user who have access to the public account can call this function');
-        emit Share(_shares, round);
+        emit Share(_shares, _round);
     }
 
     function register_group_key(uint256[2] memory _gpk, uint _anonymous_id, uint _round)public{

@@ -4,6 +4,9 @@ from py_ecc.optimized_bn128 import add, multiply, neg, normalize, pairing, is_on
 from py_ecc.optimized_bn128 import curve_order as CURVE_ORDER
 from py_ecc.fields import optimized_bn128_FQ2 as FQ2
 from py_ecc.fields import optimized_bn128_FQ as FQ
+from Crypto.Cipher import Salsa20
+from Crypto.Hash import SHA256
+from Crypto.Protocol.KDF import HKDF
 
 H2 = (
     FQ2((
@@ -29,3 +32,9 @@ class IntPoly:
 
     def evaluate(self,x):
         return sum([coeff*pow(x,i,CURVE_ORDER) for i, coeff in enumerate(self.coeffs)])%CURVE_ORDER
+
+def encrypt_int(x, key_point):
+    sym_key = HKDF((str(key_point.x)+str(key_point.y)).encode(),32,b'',SHA256)
+    salsa20 = Salsa20.new(sym_key, bytes(8))
+    enc_x = salsa20.encrypt(hex(x).encode())
+    return enc_x

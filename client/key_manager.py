@@ -11,7 +11,7 @@ from Crypto.Random.random import getrandbits, randrange
 from py_ecc.optimized_bn128 import curve_order as CURVE_ORDER
 from crypto_utils import H1, H2
 from py_ecc.optimized_bn128 import add, multiply, neg, normalize, pairing, is_on_curve
-from crypto_utils import IntPoly
+from crypto_utils import IntPoly, encrypt_int
 
 
 def get_db():
@@ -104,6 +104,8 @@ class BlockchainClient:
         pk_y = int(pk_sql['pk_y'],0)
         self.key_point = ECC.EccPoint(pk_x, pk_y)*int(self.private_key,0)
 
+        db.close()
+
     def decrypt_public_account(self,index):
         sym_key = HKDF((str(self.key_point.x)+str(self.key_point.y)).encode(),32,b'',SHA256)
         encrypted_account_eth = self.contract.caller().get_encrypted_public_account(index)
@@ -136,7 +138,8 @@ class BlockchainClient:
         #TODO modifier le contrat et ajouter le numero de round
         transaction = self.contract.functions.publish_pk(
             [int(coord) for coord in self.tp_key_list[round][0].pointQ.xy],
-            self.tp_key_list[round][1]
+            self.tp_key_list[round][1],
+            round
             ).buildTransaction(
             {
                 'chainId':1,
@@ -149,7 +152,7 @@ class BlockchainClient:
 
     def retrieve_tpki_ui(self, round):
         #TODO ajouter le numero de round a l'evenement
-        filter_tpk = self.contract.events.PublicKey.createFilter(fromBlock=0)#, argument_filters={"round":round})
+        filter_tpk = self.contract.events.PublicKey.createFilter(fromBlock=0, argument_filters={"round":round})
         events = filter_tpk.get_all_entries()
         if len(events) == 1:
             self.tp_anon_id[round] = []
@@ -166,6 +169,29 @@ class BlockchainClient:
         uj_list = [d['uj'] for d in self.tp_anon_id[round]]
         return [self.poly_dict[round].evaluate(uj) for uj in uj_list]
 
+    def encrypt_shares(self, round, shares):
+        tski = self.tp_key_list[round][0].d
+        tpkj_list = self.tp_anon_id[round]
+        n = len(tpkj_list)
+        result=[]
+        for i in range(n):
+            tpkj = tpkj_list[i]['tpkj']
+            key_point = tpkj*tski
+            result.append(encrypt_int(shares[i], key_point))
+
+        transaction = self.contract.functions.publish_share(
+            result,
+            round
+            ).buildTransaction(
+            {
+                'chainId':1,
+                'gas':1000000,
+                'nonce': self.w3.eth.getTransactionCount(self.public_account)
+            }
+        )
+        signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
+        txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+
 ## main program
 if __name__=="__main__":
     host, port, contract_address, private_key = parse_args()
@@ -173,12 +199,14 @@ if __name__=="__main__":
 
     filter_group_creation = client.contract.events.GroupCreation.createFilter(fromBlock=0)
     ev_group_creation = filter_group_creation.get_all_entries()
+
     if(len(ev_group_creation)>=1):
         client.get_contract_Info()
-        client.decrypt_public_account(2)
+        print(client.decrypt_public_account(1))
         client.generate_anonymous_id()
         client.generate_si()
         client.generate_rand_poly(0)
         #client.publish_tpk(0)
         client.retrieve_tpki_ui(0)
-        print(client.evaluate_and_encrypt_shares(0))
+        shares = client.evaluate_shares(0)
+        client.encrypt_shares(0,shares)
