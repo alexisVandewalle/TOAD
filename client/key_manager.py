@@ -13,6 +13,7 @@ from crypto_utils import H1, H2
 from py_ecc.optimized_bn128 import add, multiply, neg, normalize, pairing, is_on_curve
 from crypto_utils import IntPoly, encrypt_int, decrypt_int, point_to_eth
 
+from decorators import member_required
 
 def get_db():
     db = sqlite3.connect('./instance/webapp.db',detect_types=sqlite3.PARSE_DECLTYPES)
@@ -67,6 +68,8 @@ class BlockchainClient:
         self.host = host
         self.port = port
 
+        self.is_member = False
+
         self.tp_key_list = []
         self.tp_anon_id = {}
         self.poly_dict = {}
@@ -89,6 +92,7 @@ class BlockchainClient:
         self.contract = self.w3.eth.contract(contract_address, abi=abi)
 
     def get_contract_Info(self):
+        # La clé publique de l'utilisateur doit etre dans la base de donnée
         self.group_size = self.contract.caller().N()
         self.threshold = self.contract.caller().t()
         self.public_account = self.contract.caller().public_account()
@@ -97,7 +101,6 @@ class BlockchainClient:
             self.encrypted_public_account.append(EncryptedAccount(self.contract.caller().get_encrypted_public_account(i)))
 
         db = get_db()
-        print(self.public_account)
         pk_sql = db.execute(
             'SELECT * from eth_public_key WHERE account_address=?',
             (self.public_account,)
@@ -110,6 +113,7 @@ class BlockchainClient:
         db.close()
 
     def decrypt_public_account(self,index):
+        # on doit deja avoir appele get_info
         sym_key = HKDF((str(self.key_point.x)+str(self.key_point.y)).encode(),32,b'',SHA256)
         encrypted_account_eth = self.contract.caller().get_encrypted_public_account(index)
 
@@ -119,24 +123,30 @@ class BlockchainClient:
         aes = AES.new(sym_key, AES.MODE_CCM, nonce=nonce)
         try:
              self.public_account_private_key = aes.decrypt_and_verify(e_sk, tag).decode()
+             self.is_member = True
              return True
         except ValueError:
             return False
 
+    @member_required
     def generate_si(self):
+        # on appelle cette fonction seulement si on est membre du groupe - sinon inutile
         self.si = randrange(CURVE_ORDER)
-        self.h_si_2 = multiply(H2,self.si)
-        self.h_si_1 = multiply(H1,self.si)
 
+    @member_required
     def generate_anonymous_id(self):
         ui = getrandbits(64)
         self.tp_key_list.append((ECC.generate(curve='P-256'),ui))
 
+    @member_required
     def generate_rand_poly(self, round):
+        if self.is_member == False:
+            raise ValueError('attribute is_member is false')
         coeffs = [randrange(CURVE_ORDER) for i in range(self.threshold)]
         coeffs = [self.si,]+coeffs
         self.poly_dict[round] = IntPoly(coeffs)
 
+    @member_required
     def publish_tpk(self,round):
         transaction = self.contract.functions.publish_pk(
             [int(coord) for coord in self.tp_key_list[round][0].pointQ.xy],
@@ -152,6 +162,7 @@ class BlockchainClient:
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
 
+    @member_required
     def retrieve_tpki_ui(self, round):
         filter_tpk = self.contract.events.PublicKey.createFilter(fromBlock=0, argument_filters={"round":round})
         events = filter_tpk.get_all_entries()
@@ -166,11 +177,13 @@ class BlockchainClient:
 
             self.tp_anon_id[round] = sorted(self.tp_anon_id[round], key=lambda k:k['uj'])
 
+    @member_required
     def evaluate_shares(self, round):
         poly = self.poly_dict[round]
         uj_list = [d['uj'] for d in self.tp_anon_id[round]]
         return [self.poly_dict[round].evaluate(uj) for uj in uj_list]
 
+    @member_required
     def encrypt_shares(self, round, shares):
         tski = self.tp_key_list[round][0].d
         tpkj_list = self.tp_anon_id[round]
@@ -195,6 +208,7 @@ class BlockchainClient:
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
 
+    @member_required
     def retrieve_shares(self, round):
         filter_tpk = self.contract.events.Share.createFilter(fromBlock=0, argument_filters={"round":round})
         events = filter_tpk.get_all_entries()
@@ -206,7 +220,7 @@ class BlockchainClient:
                 self.share_dict[round].append(list_share)
             self.share_dict[round].sort(key=lambda k:k[-1])
 
-    def find_rank(self, round):
+    def __find_rank(self, round):
         #my_ui = self.tp_key_list[round][1]
         my_ui = 14819965287647311834
         tp_id = self.tp_anon_id[round]
@@ -214,11 +228,12 @@ class BlockchainClient:
             if tp_id[i]['uj'] == my_ui:
                 return i
 
+    @member_required
     def decrypt_my_shares(self, round):
         # TODO enlever la zone commentée utilisée pour le test
         #tski = self.tp_key_list[round][0].d
         tski = 101556918311806889347608112229875415018165084929375640946667848539180553894032
-        column_id = self.find_rank(round)
+        column_id = self.__find_rank(round)
         list_shares = self.share_dict[round]
         my_shares = [row[column_id] for row in list_shares]
         fj_ui=[]
@@ -229,12 +244,14 @@ class BlockchainClient:
 
         return fj_ui
 
+    @member_required
     def compute_group_keys(self, round, fj_ui):
         self.gski[round] = sum(fj_ui)
         self.gpki[round] = multiply(H1,self.gski[round])
         print("group secret key:",self.gski)
         print("group public key:",self.gpki)
 
+    @member_required
     def publish_group_key(self,round):
         my_ui = self.tp_key_list[round][1]
         transaction = self.contract.functions.register_group_key(
@@ -283,4 +300,4 @@ if __name__=="__main__":
         client.retrieve_shares(0)
         fj_ui = client.decrypt_my_shares(0)
         client.compute_group_keys(0,fj_ui)
-        client.publish_group_key(0)
+        #client.publish_group_key(0)
