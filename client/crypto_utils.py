@@ -44,3 +44,15 @@ def decrypt_int(x, key_point):
     salsa20 = Salsa20.new(sym_key, bytes(8))
     dec_x = int(salsa20.decrypt(x).decode(),0)
     return dec_x
+
+def point_to_eth(p):
+    """
+    Transform a point of py-ecc in G1 to a tuple
+    Args:
+        p (Tuple(py_ecc.fields.optimized_bn128_FQ2)): a point in G1
+
+    Returns:
+        A tuple of 2 int containing the coefficients of the point
+    """
+    pn = normalize(p)
+    return int(pn[0]), int(pn[1])

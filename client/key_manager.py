@@ -11,7 +11,7 @@ from Crypto.Random.random import getrandbits, randrange
 from py_ecc.optimized_bn128 import curve_order as CURVE_ORDER
 from crypto_utils import H1, H2
 from py_ecc.optimized_bn128 import add, multiply, neg, normalize, pairing, is_on_curve
-from crypto_utils import IntPoly, encrypt_int, decrypt_int
+from crypto_utils import IntPoly, encrypt_int, decrypt_int, point_to_eth
 
 
 def get_db():
@@ -71,6 +71,8 @@ class BlockchainClient:
         self.tp_anon_id = {}
         self.poly_dict = {}
         self.share_dict = {}
+        self.gski={}
+        self.gpki={}
 
         self.w3 = Web3(Web3.HTTPProvider(self.host+':'+self.port))
         self.connected = True
@@ -227,6 +229,27 @@ class BlockchainClient:
 
         return fj_ui
 
+    def compute_group_keys(self, round, fj_ui):
+        self.gski[round] = sum(fj_ui)
+        self.gpki[round] = multiply(H1,self.gski[round])
+        print("group secret key:",self.gski)
+        print("group public key:",self.gpki)
+
+    def publish_group_key(self,round):
+        my_ui = self.tp_key_list[round][1]
+        transaction = self.contract.functions.register_group_key(
+            point_to_eth(self.gpki[round]),
+            self.tp_key_list[round][1],
+            round
+            ).buildTransaction(
+            {
+                'chainId':1,
+                'gas':1000000,
+                'nonce': self.w3.eth.getTransactionCount(self.public_account)
+            }
+        )
+        signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
+        txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
 
 ## main program
 if __name__=="__main__":
@@ -258,4 +281,6 @@ if __name__=="__main__":
         print("shares for round 0",shares)
         #client.encrypt_shares(0,shares)
         client.retrieve_shares(0)
-        print(client.decrypt_my_shares(0))
+        fj_ui = client.decrypt_my_shares(0)
+        client.compute_group_keys(0,fj_ui)
+        client.publish_group_key(0)
