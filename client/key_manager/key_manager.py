@@ -262,6 +262,13 @@ class KeyManager:
     def compute_group_keys(self, round, fj_ui):
         self.gski[round] = sum(fj_ui)
         self.gpki[round] = multiply(H1,self.gski[round])
+
+        db = get_db()
+        my_ui = self.tp_key_list[round][1]
+        value = [str(self.gski[round]), str(my_ui), round]
+        db.execute("INSERT INTO gsk (gsk, ui, round) VALUES (?,?,?)", value)
+        db.commit()
+        db.close()
         print("group secret key:",self.gski)
         print("group public key:",self.gpki)
 
@@ -281,6 +288,7 @@ class KeyManager:
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+
 
     def check_new_message(self):
         filter_new_msg = self.contract.events.NewMessage.createFilter(fromBlock=0, argument_filters={"round":round})

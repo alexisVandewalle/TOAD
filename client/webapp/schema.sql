@@ -22,7 +22,7 @@ CREATE TABLE eth_public_key (
 CREATE TABLE gpk (
     x TEXT,
     y TEXT,
-    ui BIGINT UNSIGNED,
+    ui TEXT,
     round INT
 );
 
@@ -40,12 +40,12 @@ CREATE TABLE share (
     file_id INTEGER,
     a TEXT,
     b TEXT,
-    ui BIGINT UNSIGNED,
+    ui TEXT,
     round INT
 );
 
 CREATE TABLE gsk (
     gsk TEXT,
-    ui BIGINT UNSIGNED,
+    ui TEXT,
     round INT
 );
