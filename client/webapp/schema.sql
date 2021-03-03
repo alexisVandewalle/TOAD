@@ -28,7 +28,7 @@ CREATE TABLE gpk (
 );
 
 CREATE TABLE encrypted_file (
-    id INTEGER,
+    roud INTEGER,
     hash TEXT,
     c1x TEXT,
     c1y TEXT,

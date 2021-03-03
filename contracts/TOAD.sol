@@ -34,8 +34,8 @@ contract TOAD{
     event Share(bytes[] shares, uint round, uint anonymous_id);
     event GroupKey(uint256[2] gpk, uint anonymous_id, uint round);
     event MasterGroupKeyAvailable();
-    event ShareForDec(address sender, uint id, uint256[4] share, uint256[2] proof);
-    event NewMessage(address sender, uint round, bytes file_hash, uint256[4] c1, uint256[4] c2);
+    event ShareForDec(address sender, uint id, uint256[2] share, uint256[2] proof);
+    event NewMessage(address sender, uint round, bytes file_hash, uint256[2] c1, uint256[2] c2);
     event GenerateNewKeys(uint round);
     event GroupCreation(address creator);
 
@@ -96,7 +96,7 @@ contract TOAD{
         return gpk_list;
     }
 
-    function send_msg(bytes memory file_hash, uint256[4] memory c1, uint256[4] memory c2) public{
+    function send_msg(bytes memory file_hash, uint256[2] memory c1, uint256[2] memory c2) public{
         require(is_mpk_available, 'master key is not available');
         emit NewMessage(msg.sender,round, file_hash, c1, c2);
         if (round>0){
@@ -105,7 +105,7 @@ contract TOAD{
         round = round + 1;
     }
 
-    function share_for_dec(uint _round, uint256[4] memory _share, uint256[2] memory _proof) public{
+    function share_for_dec(uint _round, uint256[2] memory _share, uint256[2] memory _proof) public{
         require(is_mpk_available, 'no message available');
         emit ShareForDec(msg.sender, _round, _share, _proof);
     }

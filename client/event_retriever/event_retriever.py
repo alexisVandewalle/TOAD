@@ -101,6 +101,7 @@ class EventRetriever:
                     )
                     if round == 0:
                         point = point_from_eth(args['gpk'])
+                        #TODO a l'initialisation remplir la liste avec les gpk existantes
                         self.gpk_0.append((point, args['anonymous_id']))
             db.commit()
             db.close()
@@ -120,11 +121,31 @@ class EventRetriever:
             self.mpk = normalize(self.mpk)
             print("master public key:",self.mpk)
 
-
-
     def retrieve_new_message(self):
+        filter_msg = self.contract.events.NewMessage.createFilter(fromBlock=0)
+        events = filter_msg.get_all_entries()
+
+        db = get_db()
+        for event in events:
+            round = event['args']['round']
+            if db.execute("SELECT * FROM encrypted_file WHERE round= ?",(round,)).fetchone() is None:
+                args = event['args']
+                value = (
+                    args['round'], args['file_hash'], str(args['c1'][0]), str(args['c1'][1]),
+                    str(args['c2'][0]), str(args['c2'][1]), args['sender']
+                )
+                db.execute(
+                    'INSERT INTO encrypted_file (round, hash, c1x, c1x, c1y, c2x, c2y, sender) \
+                        VALUES (?,?,?,?,?,?,?,?)',value
+                )
+
+        db.commit()
+        db.close()
+
+    def retrieve_share(self):
         pass
 
+    
 if __name__=="__main__":
     host, port, contract_address = parse_args()
     ev_retriever = EventRetriever(contract_address)
