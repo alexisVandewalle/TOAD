@@ -17,7 +17,7 @@ from crypto_utils import IntPoly, encrypt_int, decrypt_int, point_to_eth
 from decorators import member_required
 
 def get_db():
-    db = sqlite3.connect('./instance/webapp.db',detect_types=sqlite3.PARSE_DECLTYPES)
+    db = sqlite3.connect('../instance/webapp.db',detect_types=sqlite3.PARSE_DECLTYPES)
     db.row_factory = sqlite3.Row
     return db
 
@@ -87,7 +87,7 @@ class KeyManager:
         else:
             print('connection to the node succeeded')
 
-        with open('../build/contracts/TOAD.json','r') as file_abi:
+        with open('../../build/contracts/TOAD.json','r') as file_abi:
             json_file = file_abi.read()
             abi = json.loads(json_file)['abi']
 
