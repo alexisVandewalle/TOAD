@@ -68,7 +68,7 @@ def send_file():
             filename = secure_filename(file.filename)
             file_to_encrypt = file.read()
             # TODO encryption of file
-            g.client.send_msg(file_to_encrypt)
+            g.client.send_file(file_to_encrypt)
 
         else:
             flash('File extension is not valid')

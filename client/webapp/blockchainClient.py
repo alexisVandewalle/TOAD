@@ -1,7 +1,12 @@
+import os
+
+from flask import current_app
 from web3 import Web3
 import json
-import webapp.Crypto_utils as cru
+import webapp.crypto_utils as cru
 from webapp.db import get_db
+import ipfsApi
+
 
 class Client:
 
@@ -47,9 +52,6 @@ class Client:
         self.account = account_address
         self.private_key = private_key
 
-    def get_public_info():
-        pass
-
     def get_public_keys(self, selected_accounts):
         db = get_db()
         placeholders = ', '.join('?' for account in selected_accounts)
@@ -75,20 +77,45 @@ class Client:
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
 
-    def publish_pk():
-        pass
+    def send_file(self, file_to_encrypt):
+        """
+        Encrypt a file with a random symetric key and put it on ipfs. Then encrypt
+        the symetric key with ElGamal cryptosystem and put it on the blockchain
+        Warning:
+            Call send_msg function on CipherETHDKG, and so create a transaction and send it.
+        Args:
+            file_to_encrypt (bytes): the file to encrypt
+        """
+        # ciphering the file
+        db = get_db()
+        mpk_sql = db.execute("SELECT * FROM mpk").fetchone()
+        mpk = cru.point_from_eth((int(mpk_sql['x']), int(mpk_sql['y'])))
+        db.close()
+        cipher = cru.Cipher(mpk)
+        ct = cipher.encrypt(file_to_encrypt)
 
-    def publish_share():
-        pass
+        # put cipher file in ipfs
+        ipfs_api = ipfsApi.Client('127.0.0.1',5001)
+        with open(os.path.join(current_app.config['UPLOAD_FOLDER'],'temp_file'), 'wb') as f:
+            f.write(ct['cipher_file'])
+        res = ipfs_api.add(os.path.join(current_app.config['UPLOAD_FOLDER'],'temp_file'))
+        os.remove(os.path.join(current_app.config['UPLOAD_FOLDER'],'temp_file'))
 
-    def register_group_key():
-        pass
-
-    def get_group_keys():
-        pass
-
-    def send_msg():
-        pass
+        # send the encryption of symmetric key used in AES to the blockchain
+        transaction = self.contract.functions.send_msg(
+            res['Hash'].encode(),
+            cru.point_to_eth(ct['c1']),
+            cru.point_to_eth(ct['c2'])
+            ).buildTransaction(
+            {
+                'chainId':1,
+                'gas':200000,
+                'nonce': self.w3.eth.getTransactionCount(self.account)
+            }
+        )
+        signed_tx = self.w3.eth.account.signTransaction(transaction, self.private_key)
+        txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        print(txn_hash)
 
     def share_for_dec():
         pass

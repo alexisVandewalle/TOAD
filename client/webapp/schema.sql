@@ -53,5 +53,5 @@ CREATE TABLE gsk (
 
 CREATE TABLE mpk (
     x TEXT,
-    y TEXT,
+    y TEXT
 );

@@ -10,7 +10,7 @@ from webapp.db import get_db
 from eth_keys import keys
 from eth_utils.exceptions import ValidationError
 
-from webapp.Crypto_utils import compute_public_key
+from webapp.crypto_utils import compute_public_key
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
