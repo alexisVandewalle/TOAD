@@ -176,7 +176,7 @@ class KeyManager:
         filter_tpk = self.contract.events.PublicKey.createFilter(fromBlock=0, argument_filters={"round":round})
         events = filter_tpk.get_all_entries()
         print("number of temporary ids:", len(events))
-        # TODO changer le 1 en group size
+
         if len(events) == self.group_size:
             self.tp_anon_id[round] = []
             for event in events:
@@ -224,7 +224,7 @@ class KeyManager:
     def retrieve_shares(self, round):
         filter_tpk = self.contract.events.Share.createFilter(fromBlock=0, argument_filters={"round":round})
         events = filter_tpk.get_all_entries()
-        # TODO changer le 1 en group size
+
         print("number of shares:",len(events))
         if len(events) == self.group_size:
             self.share_dict[round]=[]
@@ -245,7 +245,7 @@ class KeyManager:
 
     @member_required
     def decrypt_my_shares(self, round):
-        # TODO enlever la zone commentée utilisée pour le test
+
         tski = self.tp_key_list[round][0].d
         column_id = self.__find_rank(round)
         list_shares = self.share_dict[round]
