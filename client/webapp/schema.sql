@@ -29,7 +29,7 @@ CREATE TABLE gpk (
 );
 
 CREATE TABLE encrypted_file (
-    roud INTEGER,
+    round INTEGER,
     hash TEXT,
     c1x TEXT,
     c1y TEXT,
@@ -39,11 +39,10 @@ CREATE TABLE encrypted_file (
 );
 
 CREATE TABLE share (
-    file_id INTEGER,
+    round INTEGER,
     a TEXT,
     b TEXT,
-    ui TEXT,
-    round INT
+    ui TEXT
 );
 
 CREATE TABLE gsk (
