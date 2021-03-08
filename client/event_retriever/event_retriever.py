@@ -140,7 +140,12 @@ class EventRetriever:
                         coeff %= CURVE_ORDER
                 self.mpk = add(self.mpk,multiply(gpki, coeff))
             self.mpk = normalize(self.mpk)
-            print("master public key:",self.mpk)
+
+            db = get_db()
+            value =(str(self.mpk[0]), str(self.mpk[1]))
+            db.execute("INSERT INTO mpk (x,y) VALUES (?,?)", value)
+            db.commit()
+            db.close()
 
     def retrieve_new_message(self):
         # TODO test this function
