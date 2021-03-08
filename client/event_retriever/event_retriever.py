@@ -162,8 +162,8 @@ class EventRetriever:
                     str(args['c2'][0]), str(args['c2'][1]), args['sender']
                 )
                 db.execute(
-                    'INSERT INTO encrypted_file (round, hash, c1x, c1x, c1y, c2x, c2y, sender) \
-                        VALUES (?,?,?,?,?,?,?,?)',value
+                    'INSERT INTO encrypted_file (round, hash, c1x, c1y, c2x, c2y, sender) \
+                        VALUES (?,?,?,?,?,?,?)',value
                 )
 
         db.commit()
@@ -205,4 +205,5 @@ if __name__=="__main__":
     while(True):
         ev_retriever.retrieve_gpk()
         ev_retriever.compute_mpk()
+        ev_retriever.retrieve_new_message()
         time.sleep(5)

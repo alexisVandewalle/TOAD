@@ -22,8 +22,8 @@ def index():
     messages = db.execute("""
     select encrypted_file.*, count(share.round) as "nb_shares"
     from encrypted_file
-    left join share on share.round=encrypted_file.id
-    group by encrypted_file.id
+    left join share on share.round=encrypted_file.round
+    group by encrypted_file.round
     """).fetchall()
     return render_template('toad/index.html', messages=messages)
 
@@ -86,6 +86,27 @@ def shares_list():
     FROM share
     """).fetchall()
     return render_template("toad/shares.html", shares=shares)
+
+
+@bp.route('/send_share/<int:file_id>')
+@login_required
+def send_share(round):
+    """
+    Send a share for a given message if possible calling the method
+    :meth:`webapp.Client.Client.send_share`.
+    Args:
+        msg_id (int): the id of the message
+    """
+    # TODO résoudre le problème d'enregistrement de lien entre ui et utilisateur
+    db = get_db()
+    if db.execute("SELECT * FROM share WHERE round=? AND ui=?",
+                  (file_id, g.user['account_address'])).fetchone() is None:
+        file_info = db.execute("SELECT * FROM encrypted_file WHERE id=?", (file_id,)).fetchone()
+        g.client.send_share(file_info)
+    else:
+        flash('error: you have already send your share')
+
+    return redirect(url_for('index'))
 
 @bp.before_request
 def blockchain_connect():

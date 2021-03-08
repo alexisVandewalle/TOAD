@@ -14,14 +14,14 @@
 
 <table class='table table-striped'>
     <tr>
-        <th>File id</th>
+        <th>Round</th>
         <th>Sender</th>
         <th>File hash</th>
         <th>Number of shares available</th>
     </tr>
     {% for row in messages %}
     <tr>
-        <td>{{ row['id'] }}</td>
+        <td>{{ row['round'] }}</td>
         <td>{{ row['sender'] }}</td>
         <td>{{ row['hash'] }}</td>
         <td>{{ row['nb_shares'] }}</td>
