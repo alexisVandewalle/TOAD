@@ -4,17 +4,50 @@ import sys, getopt
 import sqlite3
 import time
 
-from py_ecc.fields import optimized_bn128_FQ as FQ
 from py_ecc.optimized_bn128 import add, multiply, neg, normalize, pairing, is_on_curve
 from py_ecc.optimized_bn128 import curve_order as CURVE_ORDER
 from py_ecc.optimized_bn128 import Z1
 
 import sympy
 
+from crypto_utils import H1, dleq_verify, point_from_eth
+
+
 def get_db():
     db = sqlite3.connect('../instance/webapp.db',detect_types=sqlite3.PARSE_DECLTYPES)
     db.row_factory = sqlite3.Row
     return db
+
+def get_c1(round):
+    """
+    Return the c1 parameter of an encrypted message.
+    Args:
+        round (int): the round associated to the message.
+
+    Returns:
+        the point c1 of the encrypted message
+    """
+    db = get_db()
+    file_info = db.execute("SELECT * FROM encrypted_file WHERE round=?", (round,)).fetchone()
+    db.close()
+    c1 = point_from_eth(
+        (int(file_info['c1x']), int(file_info['c1y'])))
+    return c1
+
+def get_group_key(round, ui):
+    """
+    Return the group key of a given user.
+    Args:
+        sender (str): the address of the user we want the goup key
+    Returns:
+        The group key of the given user (a point in G2)
+    """
+    db = get_db()
+    gpk = db.execute("SELECT * FROM gpk WHERE round=? AND ui=?", (round,ui)).fetchone()
+    db.close()
+    if gpk is not None:
+        return point_from_eth((int(gpk['a']), int(gpk['b'])))
+    return None
 
 def parse_args():
     opts, args = getopt.getopt(sys.argv[1:], 'c:h:p:')
@@ -33,18 +66,6 @@ def parse_args():
         sys.exit('You must provide a contract address')
 
     return host, port, contract_address
-
-def point_from_eth(p):
-    """
-    Convert a tuple point in G1 to a point in G1 compatible with py-ecc.
-    Args:
-        p (Tuple(int,int,int,int)): A tuple representing the point in G1
-
-    Returns:
-        A point in G1 which is compatible with py-ecc
-    """
-    x, y = p
-    return (FQ(x), FQ(y), FQ(1))
 
 class EventRetriever:
     def __init__(self, contract_address, port='8545', host='http://127.0.0.1'):
@@ -122,6 +143,7 @@ class EventRetriever:
             print("master public key:",self.mpk)
 
     def retrieve_new_message(self):
+        # TODO test this function
         filter_msg = self.contract.events.NewMessage.createFilter(fromBlock=0)
         events = filter_msg.get_all_entries()
 
@@ -143,7 +165,33 @@ class EventRetriever:
         db.close()
 
     def retrieve_share(self):
-        pass
+        # TODO test this function
+        filter_share = self.contract.events.ShareForDec.createFilter(fromBlock=0)
+        events = filter_share.get_all_entries()
+
+        db = get_db()
+        for event in events:
+            a = event['args']['share'][0]
+            if db.execute("SELECT * FROM share WHERE a=?", (str(a),)).fetchone() is None:
+                args = event['args']
+                share_point = point_from_eth(args['share'])
+                c1 = get_c1(args['round'])
+
+                gpk = get_group_key(args['ui'], args['round'])
+
+                if gpk is not None:
+                    proof = args['proof']
+
+                    if dleq_verify(c1, share_point, H1, gpk, proof[0], proof[1]):
+                        value = (
+                            args['round'], str(args['share'][0]), str(args['share'][1]), str(args['ui'])
+                        )
+                        db.execute(
+                            'INSERT INTO share (round, a, b, ui) \
+                                VALUES (?,?,?,?)', value
+                        )
+        db.commit()
+        db.close()
 
     
 if __name__=="__main__":
