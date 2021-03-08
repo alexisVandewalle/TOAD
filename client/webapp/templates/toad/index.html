@@ -12,4 +12,21 @@
 </div>
 {% endif %}
 
+<table class='table table-striped'>
+    <tr>
+        <th>File id</th>
+        <th>Sender</th>
+        <th>File hash</th>
+        <th>Number of shares available</th>
+    </tr>
+    {% for row in messages %}
+    <tr>
+        <td>{{ row['id'] }}</td>
+        <td>{{ row['sender'] }}</td>
+        <td>{{ row['hash'] }}</td>
+        <td>{{ row['nb_shares'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
 {% endblock %}

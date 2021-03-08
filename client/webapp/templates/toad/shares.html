@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}list of shares{% endblock %}
+
+{% block section %}
+<table class='table table-striped'>
+    <tr>
+        <th>File id</th>
+        <th>Anonymous ID</th>
+    </tr>
+    {% for row in shares %}
+    <tr>
+        <td>{{ row['file_id'] }}</td>
+        <td>{{ row['ui'] }}</td>
+        <td>{{ row['username'] }} </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
