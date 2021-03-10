@@ -43,10 +43,10 @@ def get_group_key(round, ui):
         The group key of the given user (a point in G2)
     """
     db = get_db()
-    gpk = db.execute("SELECT * FROM gpk WHERE round=? AND ui=?", (round,ui)).fetchone()
+    gpk = db.execute("SELECT * FROM gpk WHERE round=? AND ui=?", (round, str(ui))).fetchone()
     db.close()
     if gpk is not None:
-        return point_from_eth((int(gpk['a']), int(gpk['b'])))
+        return point_from_eth((int(gpk['x']), int(gpk['y'])))
     return None
 
 def parse_args():
@@ -182,8 +182,8 @@ class EventRetriever:
                 share_point = point_from_eth(args['share'])
                 c1 = get_c1(args['round'])
 
-                gpk = get_group_key(args['ui'], args['round'])
-
+                gpk = get_group_key(args['round'], args['ui'])
+                print(str(args['ui']))
                 if gpk is not None:
                     proof = args['proof']
 
@@ -206,4 +206,5 @@ if __name__=="__main__":
         ev_retriever.retrieve_gpk()
         ev_retriever.compute_mpk()
         ev_retriever.retrieve_new_message()
+        ev_retriever.retrieve_share()
         time.sleep(5)
