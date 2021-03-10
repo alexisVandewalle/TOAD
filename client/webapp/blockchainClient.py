@@ -8,7 +8,6 @@ from webapp.db import get_db
 import ipfsApi
 
 from py_ecc.optimized_bn128 import multiply
-from webapp.crypto_utils import point_from_eth, point_to_eth, dleq,H1
 
 
 class Client:
@@ -132,18 +131,18 @@ class Client:
         db = get_db()
         gsk_sql = db.execute("SELECT * FROM gsk WHERE user_pk=? AND round=?", (self.private_key, file_info['round'])).fetchone()
         gsk = int(gsk_sql['gsk'])
-        gpk = multiply(H1, gsk)
+        gpk = multiply(cru.H1, gsk)
         ui = int(gsk_sql['ui'])
         db.close()
 
         c1 = (int(file_info['c1x']), int(file_info['c1y']))
-        c1 = point_from_eth(c1)
+        c1 = cru.point_from_eth(c1)
         share_for_decryption = multiply(c1, gsk)
-        proof = dleq(c1, share_for_decryption, H1, gpk, gsk)
+        proof = cru.dleq(c1, share_for_decryption, cru.H1, gpk, gsk)
         transaction = self.contract.functions.share_for_dec(
             ui,
             file_info['round'],
-            point_to_eth(share_for_decryption),
+            cru.point_to_eth(share_for_decryption),
             proof
         ).buildTransaction(
             {
@@ -155,3 +154,64 @@ class Client:
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
 
+    def select_t_valid_share(self, round):
+        """
+        Select a set of threshold+1 valid shares for a given message.
+        The returned dictionnary has the following shape:
+
+        .. code-block:: python
+
+            {id_user1: share1, id_user2: share2}
+
+        Args:
+            file_id (int): the id of the message for which we want to select the shares.
+
+        Returns:
+            dict: set of :math:`threshold+1` valid shares.
+        """
+        db = get_db()
+        db_shares = db.execute("SELECT * FROM share WHERE round=?", (round,)).fetchall()
+        threshold = self.contract.caller().t()
+        if len(db_shares) < threshold + 1:
+            raise ValueError('Not enough shares available')
+
+        shares={}
+        for i in range(threshold+1):
+            point = (int(db_shares[i]['a']),int(db_shares[i]['b']))
+            shares[int(db_shares[i]['ui'])] = cru.point_from_eth(point)
+
+        return shares
+
+    def decrypt_file(self, round):
+        """
+        Decrypt a given message if there are at least threshold+1 shares available.
+        Args:
+            file_id (int): the id of the message
+
+        Returns:
+            (bytes) the decrypted message
+        """
+        shares = self.select_t_valid_share(round)
+        c1_power_s = cru.point_from_eth(cru.point_to_eth(cru.Cipher.recover_c1(shares)))
+
+        db = get_db()
+        file_info = db.execute('SELECT * FROM encrypted_file WHERE round=?', (round,)).fetchone()
+
+        c2 = (int(file_info['c2x']), int(file_info['c2y'])
+        )
+        c2 = cru.point_from_eth(c2)
+
+        cid_ipfs = str(file_info['hash'])[2:-1]
+
+        ipfs_api = ipfsApi.Client('127.0.0.1', 8080)
+        ipfs_api.get(cid_ipfs)
+        with open(cid_ipfs, 'rb') as f:
+            cipher_file = f.read()
+        os.remove(cid_ipfs)
+
+        encrypt_file = {
+            'cipher_file': cipher_file,
+            'c1': c1_power_s,
+            'c2': c2
+        }
+        return cru.Cipher.decrypt(encrypt_file)

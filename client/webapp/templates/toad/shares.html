@@ -4,14 +4,13 @@
 {% block section %}
 <table class='table table-striped'>
     <tr>
-        <th>File id</th>
+        <th>Round</th>
         <th>Anonymous ID</th>
     </tr>
     {% for row in shares %}
     <tr>
-        <td>{{ row['file_id'] }}</td>
+        <td>{{ row['round'] }}</td>
         <td>{{ row['ui'] }}</td>
-        <td>{{ row['username'] }} </td>
     </tr>
     {% endfor %}
 </table>

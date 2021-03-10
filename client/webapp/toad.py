@@ -104,10 +104,38 @@ def shares_list():
     """
     db = get_db()
     shares = db.execute("""
-    SELECT share.file_id, share.ui
+    SELECT share.round, share.ui
     FROM share
     """).fetchall()
     return render_template("toad/shares.html", shares=shares)
+
+
+@bp.route('/decrypt/<int:round>')
+def decrypt(round):
+    """
+    Decrypt a given message calling :meth:`webapp.Client.Client.decrypt_message` if it
+    is possible.
+    Args:
+        file_id: the id of the message to decrypt.
+    """
+    result = None
+    try:
+        result = g.client.decrypt_file(round)
+        isdecrypt = True
+
+    except ValueError:
+        error = 'Not enough shares available or corrupted ciphered file'
+        isdecrypt = False
+        flash(error)
+
+    if isdecrypt:
+        with open('download/result', 'wb') as result_file:
+            result_file.write(result)
+        db = get_db()
+        file_hash = db.execute("select hash from encrypted_file where id=?", (round,)).fetchone()['hash']
+        return send_file('../download/result', as_attachment=True, attachment_filename=str(file_hash)[2:-1])
+
+    return redirect(url_for('toad.index'))
 
 @bp.before_request
 def blockchain_connect():
