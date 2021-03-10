@@ -265,8 +265,8 @@ class KeyManager:
 
         db = get_db()
         my_ui = self.tp_key_list[round][1]
-        value = [str(self.gski[round]), str(my_ui), round]
-        db.execute("INSERT INTO gsk (gsk, ui, round) VALUES (?,?,?)", value)
+        value = [str(self.gski[round]), str(my_ui), round, self.private_key]
+        db.execute("INSERT INTO gsk (gsk, ui, round,user_pk) VALUES (?,?,?,?)", value)
         db.commit()
         db.close()
         print("group secret key:",self.gski)
@@ -294,7 +294,7 @@ class KeyManager:
         filter_new_msg = self.contract.events.NewMessage.createFilter(fromBlock=0, argument_filters={"round":round})
         events = filter_new_msg.get_all_entries()
         if len(events)>self.nb_message_received:
-            nb_message_received +=1
+            self.nb_message_received +=1
             return True
         return False
 

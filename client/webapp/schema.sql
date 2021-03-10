@@ -7,6 +7,8 @@ DROP TABLE IF EXISTS gpk;
 DROP TABLE IF EXISTS share;
 DROP TABLE IF EXISTS encrypted_file;
 DROP TABLE IF EXISTS mpk;
+DROP TABLE IF EXISTS ui;
+
 /*
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,7 +50,8 @@ CREATE TABLE share (
 CREATE TABLE gsk (
     gsk TEXT,
     ui TEXT,
-    round INT
+    round INT,
+    user_pk TEXT
 );
 
 CREATE TABLE mpk (

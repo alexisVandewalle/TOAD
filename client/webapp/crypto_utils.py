@@ -1,6 +1,7 @@
 import secrets
 
 import sympy
+import web3
 from Crypto.PublicKey import ECC
 from Crypto.Protocol.KDF import HKDF
 from Crypto.Cipher import AES
@@ -9,6 +10,9 @@ from py_ecc.optimized_bn128 import add, multiply, neg, normalize
 from py_ecc.optimized_bn128 import curve_order as CURVE_ORDER
 from py_ecc.optimized_bn128 import Z1
 from py_ecc.fields import optimized_bn128_FQ as FQ
+
+
+keccak_256 = web3.Web3.solidityKeccak
 
 H1 = (
     FQ(9727523064272218541460723335320998459488975639302513747055235660443850046724),
@@ -41,6 +45,41 @@ def point_from_eth(p):
     """
     x, y = p
     return (FQ(x), FQ(y), FQ(1))
+
+
+def dleq(x1, y1, x2, y2, alpha):
+    """
+    DLEQ... discrete logarithm equality
+    Compute a proof to prove that the caller knows :math:`\\alpha` such that
+    :math:`y_1 = x_1^{\\alpha}` and :math:`y_2 = x_2^{\\alpha}`
+    without revealing :math:`\\alpha`.
+    Args:
+        x1: a point in G1
+        y1: :math:`x_1^{\\alpha}`
+        x2: a point in G1
+        y2: :math:`x_2^{\\alpha}`
+
+    Returns:
+        A Tuple(int,int) containing the proof.
+    """
+    w = secrets.randbelow(CURVE_ORDER)
+    a1 = multiply(x1, w)
+    a2 = multiply(x2, w)
+    c = keccak_256(
+        abi_types=["uint256"] * 12,
+        values=[
+            int(v)
+            for v in normalize(a1)
+                     + normalize(a2)
+                     + normalize(x1)
+                     + normalize(y1)
+                     + normalize(x2)
+                     + normalize(y2)
+        ],
+    )
+    c = int.from_bytes(c, "big")
+    r = (w - alpha * c) % CURVE_ORDER
+    return c, r
 
 def compute_public_key(private_key):
     private_key_int = int(private_key,0)

@@ -7,6 +7,9 @@ import webapp.crypto_utils as cru
 from webapp.db import get_db
 import ipfsApi
 
+from py_ecc.optimized_bn128 import multiply
+from webapp.crypto_utils import point_from_eth, point_to_eth, dleq,H1
+
 
 class Client:
 
@@ -117,5 +120,38 @@ class Client:
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
         print(txn_hash)
 
-    def share_for_dec():
-        pass
+    def send_share(self, file_info):
+        """
+        Send a share for a specific message along with its proof of correctness.
+        Warning:
+            Call the function share on CipherETHDKG, and so send a transaction.
+        Args:
+            row (dict): a row of the database containing the message
+            message_id (int): the id of the message
+        """
+        db = get_db()
+        gsk_sql = db.execute("SELECT * FROM gsk WHERE user_pk=? AND round=?", (self.private_key, file_info['round'])).fetchone()
+        gsk = int(gsk_sql['gsk'])
+        gpk = multiply(H1, gsk)
+        ui = int(gsk_sql['ui'])
+        db.close()
+
+        c1 = (int(file_info['c1x']), int(file_info['c1y']))
+        c1 = point_from_eth(c1)
+        share_for_decryption = multiply(c1, gsk)
+        proof = dleq(c1, share_for_decryption, H1, gpk, gsk)
+        transaction = self.contract.functions.share_for_dec(
+            ui,
+            file_info['round'],
+            point_to_eth(share_for_decryption),
+            proof
+        ).buildTransaction(
+            {
+                'chainId': 1,
+                'gas': 200000,
+                'nonce': self.w3.eth.getTransactionCount(self.account)
+            }
+        )
+        signed_tx = self.w3.eth.account.signTransaction(transaction, self.private_key)
+        txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+

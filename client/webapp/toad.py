@@ -75,6 +75,28 @@ def send_file():
 
     return render_template('toad/send_file.html')
 
+
+@bp.route('/send_share/<int:round>')
+@login_required
+def send_share(round):
+    """
+    Send a share for a given message if possible calling the method
+    :meth:`webapp.Client.Client.send_share`.
+    Args:
+        msg_id (int): the id of the message
+    """
+    db = get_db()
+    ui = int(db.execute('SELECT * FROM gsk WHERE round=? AND user_pk=?', (round, g.client.private_key)).fetchone()['ui'])
+    if db.execute("SELECT * FROM share WHERE round=? AND ui=?",
+                  (round,str(ui))).fetchone() is None:
+        file_info = db.execute("SELECT * FROM encrypted_file WHERE round=?", (round,)).fetchone()
+        g.client.send_share(file_info)
+    else:
+        flash('error: you have already send your share')
+
+    return redirect(url_for('toad.index'))
+
+
 @bp.route('/list_of_shares/')
 def shares_list():
     """
@@ -86,27 +108,6 @@ def shares_list():
     FROM share
     """).fetchall()
     return render_template("toad/shares.html", shares=shares)
-
-
-@bp.route('/send_share/<int:file_id>')
-@login_required
-def send_share(round):
-    """
-    Send a share for a given message if possible calling the method
-    :meth:`webapp.Client.Client.send_share`.
-    Args:
-        msg_id (int): the id of the message
-    """
-    # TODO résoudre le problème d'enregistrement de lien entre ui et utilisateur
-    db = get_db()
-    if db.execute("SELECT * FROM share WHERE round=? AND ui=?",
-                  (file_id, g.user['account_address'])).fetchone() is None:
-        file_info = db.execute("SELECT * FROM encrypted_file WHERE id=?", (file_id,)).fetchone()
-        g.client.send_share(file_info)
-    else:
-        flash('error: you have already send your share')
-
-    return redirect(url_for('index'))
 
 @bp.before_request
 def blockchain_connect():
