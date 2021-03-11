@@ -2,7 +2,7 @@ import functools
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for,
-    current_app)
+    current_app, send_file)
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from webapp.db import get_db
@@ -46,7 +46,7 @@ def group_creation():
 
 @bp.route('/send_file/', methods=['GET','POST'])
 @login_required
-def send_file():
+def encrypt_and_send_file():
     """
     Contain a form to send encrypted files and send encrypted files calling
     :meth:`webapp.Client.Client.send_msg` if the user has uploaded a file
@@ -132,7 +132,7 @@ def decrypt(round):
         with open('download/result', 'wb') as result_file:
             result_file.write(result)
         db = get_db()
-        file_hash = db.execute("select hash from encrypted_file where id=?", (round,)).fetchone()['hash']
+        file_hash = db.execute("select hash from encrypted_file where round=?", (round,)).fetchone()['hash']
         return send_file('../download/result', as_attachment=True, attachment_filename=str(file_hash)[2:-1])
 
     return redirect(url_for('toad.index'))

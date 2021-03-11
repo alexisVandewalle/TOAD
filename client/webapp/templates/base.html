@@ -22,7 +22,7 @@
             <li><a class="nav-link" href="{{ url_for('toad.shares_list') }} ">Available shares</a></li>
             {% if g.user %}
             <li><a class="nav-link" href="{{ url_for('toad.group_creation') }} ">Group creation</a></li>
-            <li><a class="nav-link" href="{{ url_for('toad.send_file') }} ">Encrypt a file</a></li>
+            <li><a class="nav-link" href="{{ url_for('toad.encrypt_and_send_file') }} ">Encrypt a file</a></li>
             <li><a class="nav-link" href="{{ url_for('auth.logout') }} ">Log out</a></li>
             {% else %}
             <li><a class="nav-link" href="{{ url_for('auth.login') }} ">Log in</a></li>

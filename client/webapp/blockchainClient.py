@@ -197,8 +197,7 @@ class Client:
         db = get_db()
         file_info = db.execute('SELECT * FROM encrypted_file WHERE round=?', (round,)).fetchone()
 
-        c2 = (int(file_info['c2x']), int(file_info['c2y'])
-        )
+        c2 = (int(file_info['c2x']), int(file_info['c2y']))
         c2 = cru.point_from_eth(c2)
 
         cid_ipfs = str(file_info['hash'])[2:-1]
