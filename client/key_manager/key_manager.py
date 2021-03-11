@@ -362,9 +362,9 @@ if __name__=="__main__":
                     print("decrypting shares")
                     fj_ui = client.decrypt_my_shares(round)
                     print("computing group key")
-                    client.compute_group_keys(0,fj_ui)
+                    client.compute_group_keys(round,fj_ui)
                     print("publishing group key")
-                    client.publish_group_key(0)
+                    client.publish_group_key(round)
                 time.sleep(5)
 
         time.sleep(5)
