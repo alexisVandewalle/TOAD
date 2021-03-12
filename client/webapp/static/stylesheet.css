@@ -1,0 +1,39 @@
+th {
+    background-color: #5cb85c;
+    color:white;
+}
+
+option:checked {
+     background: linear-gradient(#5cb85c, #5cb85c);
+}
+
+.navitem {
+    color: #5cb85c;
+}
+
+.navitem:hover {
+    color: white;
+    background-color: dimgrey;
+    border-radius: 3px;
+}
+
+.userinfo {
+    background-color: #5cb85c;
+    color:white
+}
+
+.formcenter {
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+  margin-top: 50px;
+}
+
+a {
+    color:#5cb85c;
+}
+
+a:hover {
+    color: #3A7734;
+    text-decoration: none;
+}
