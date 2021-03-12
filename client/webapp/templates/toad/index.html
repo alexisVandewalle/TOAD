@@ -4,10 +4,10 @@
 {% if g.user %}
 <div class="container m-3">
     <ul class="list-group">
-        <li class="list-group-item"><b>Info about user:</b></li>
-        <li class="list-group-item"><b>username:</b> {{ g.user['username'] }}</li>
-        <li class="list-group-item"><b>private key:</b> {{ g.user['private_key'] }}</li>
-        <li class="list-group-item"><b>account address:</b> {{ g.user['account_address'] }}</li>
+        <li class="list-group-item userinfo"><b>Info about user:</b></li>
+        <li class="list-group-item userinfo"><b>username:</b> {{ g.user['username'] }}</li>
+        <li class="list-group-item userinfo"><b>private key:</b> {{ g.user['private_key'] }}</li>
+        <li class="list-group-item userinfo"><b>account address:</b> {{ g.user['account_address'] }}</li>
     </ul>
 </div>
 {% endif %}
@@ -18,13 +18,19 @@
         <th>Sender</th>
         <th>File hash</th>
         <th>Number of shares available</th>
+        {% if g.user %}
+        <th>Send Share</th>
+        {% endif %}
     </tr>
     {% for row in messages %}
     <tr>
         <td>{{ row['round'] }}</td>
         <td>{{ row['sender'] }}</td>
-        <td>{{ row['hash'] }}</td>
+        <td><a href="{{ url_for('toad.decrypt', round=row['round']) }}">{{ row['hash'] }}</a></td>
         <td>{{ row['nb_shares'] }}</td>
+        {% if g.user %}
+        <td><a href="{{ url_for('toad.send_share', round=row['round']) }}">GO</a></td>
+        {% endif %}
     </tr>
     {% endfor %}
 </table>

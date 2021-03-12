@@ -2,15 +2,15 @@
 {% block title %}Register{% endblock %}
 
 {% block section %}
-<div class="container col-8 m-3">
+<div class="formcenter">
     <form method='POST' class='form-group'>
         <label for="username">Username</label>
         <input class="form-control" name="username" id="username" required>
         <label for="private_key">Private key</label>
         <input class="form-control" name="private_key" id="private_key" required>
-        <label for="account address">Account address</label>
+        <label for="account_address">Account address</label>
         <input class="form-control" name="account_address" id="account_address" required>
-        <input class="btn btn-primary m-3" type="submit" value="Register">
+        <input class="btn btn-success m-3" type="submit" value="Register">
     </form>
 </div>
 {% endblock %}
