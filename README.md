@@ -16,5 +16,14 @@ This repository is an implementation of the protocol named TOAD (ThreshOld Anymo
  + Install truffle and ganache-cli
  ```bash
   npm install truffle
-  npm install ganche-cli
+  npm install ganache-cli
+ ```
+ + Install ipfs
+ ```bash
+ choco install ipfs (windows)
+ snap install ipfs (linux)
+ ```
+ + Init ipfs
+ ```bash
+ ipfs init
  ```
