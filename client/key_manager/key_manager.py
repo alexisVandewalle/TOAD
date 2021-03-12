@@ -15,7 +15,7 @@ from py_ecc.optimized_bn128 import add, multiply, neg, normalize, pairing, is_on
 from crypto_utils import IntPoly, encrypt_int, decrypt_int, point_to_eth
 
 from decorators import member_required
-
+# TODO evaluation of gas for each function
 def get_db():
     db = sqlite3.connect('../instance/webapp.db',detect_types=sqlite3.PARSE_DECLTYPES)
     db.row_factory = sqlite3.Row

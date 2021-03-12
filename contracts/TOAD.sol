@@ -106,7 +106,9 @@ contract TOAD{
     }
 
     function share_for_dec(uint64 _ui, uint _round, uint256[2] memory _share, uint256[2] memory _proof) public{
-        require(is_mpk_available, 'no message available');
+        // TODO add a require to check if a user is a member of the group
+        //require(msg.sender==public_account,'only user who have access to the public account can call this function');
+        require(is_mpk_available, 'no master key available');
         emit ShareForDec(_ui, _round, _share, _proof);
     }
 
