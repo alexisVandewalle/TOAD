@@ -1,5 +1,4 @@
 -- TODO remove this comments
--- TODO create a table with ui connected to a user
 -- DROP TABLE IF EXISTS user;
 -- DROP TABLE IF EXISTS eth_public_key;
 DROP TABLE IF EXISTS gsk;

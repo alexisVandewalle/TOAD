@@ -67,7 +67,6 @@ def encrypt_and_send_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file_to_encrypt = file.read()
-            # TODO encryption of file
             g.client.send_file(file_to_encrypt)
 
         else:

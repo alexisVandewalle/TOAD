@@ -148,7 +148,6 @@ class EventRetriever:
             db.close()
 
     def retrieve_new_message(self):
-        # TODO test this function
         filter_msg = self.contract.events.NewMessage.createFilter(fromBlock=0)
         events = filter_msg.get_all_entries()
 
@@ -170,7 +169,6 @@ class EventRetriever:
         db.close()
 
     def retrieve_share(self):
-        # TODO test this function
         filter_share = self.contract.events.ShareForDec.createFilter(fromBlock=0)
         events = filter_share.get_all_entries()
 
