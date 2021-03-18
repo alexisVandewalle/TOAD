@@ -6,6 +6,7 @@ import json
 import webapp.crypto_utils as cru
 from webapp.db import get_db
 import ipfsApi
+from webapp.decorators import gas_cost
 
 from py_ecc.optimized_bn128 import multiply
 
@@ -63,6 +64,7 @@ class Client:
         ).fetchall()
         return [(int(row['pk_x'],0), int(row['pk_y'],0)) for row in public_keys]
 
+    @gas_cost
     def group_creation(self, selected_accounts):
         threshold = len(selected_accounts)//2
         public_keys = self.get_public_keys(selected_accounts)
@@ -78,7 +80,9 @@ class Client:
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        return txn_hash
 
+    @gas_cost
     def send_file(self, file_to_encrypt):
         """
         Encrypt a file with a random symetric key and put it on ipfs. Then encrypt
@@ -117,8 +121,9 @@ class Client:
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
-        print(txn_hash)
+        return txn_hash
 
+    @gas_cost
     def send_share(self, file_info):
         """
         Send a share for a specific message along with its proof of correctness.
@@ -153,6 +158,7 @@ class Client:
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        return txn_hash
 
     def select_t_valid_share(self, round):
         """

@@ -14,7 +14,7 @@ from crypto_utils import H1, H2
 from py_ecc.optimized_bn128 import add, multiply, neg, normalize, pairing, is_on_curve
 from crypto_utils import IntPoly, encrypt_int, decrypt_int, point_to_eth
 
-from decorators import member_required
+from decorators import member_required, gas_cost
 # TODO evaluation of gas for each function
 def get_db():
     db = sqlite3.connect('../instance/webapp.db',detect_types=sqlite3.PARSE_DECLTYPES)
@@ -155,6 +155,7 @@ class KeyManager:
         coeffs = [self.si,]+coeffs
         self.poly_dict[round] = IntPoly(coeffs)
 
+    @gas_cost
     @member_required
     def publish_tpk(self,round):
         transaction = self.contract.functions.publish_pk(
@@ -170,6 +171,7 @@ class KeyManager:
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        return txn_hash
 
     @member_required
     def retrieve_tpki_ui(self, round):
@@ -196,6 +198,7 @@ class KeyManager:
         uj_list = [d['uj'] for d in self.tp_anon_id[round]]
         return [self.poly_dict[round].evaluate(uj) for uj in uj_list]
 
+    @gas_cost
     @member_required
     def encrypt_shares(self, round, shares):
         tski = self.tp_key_list[round][0].d
@@ -219,6 +222,7 @@ class KeyManager:
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        return txn_hash
 
     @member_required
     def retrieve_shares(self, round):
@@ -272,6 +276,7 @@ class KeyManager:
         print("group secret key:",self.gski)
         print("group public key:",self.gpki)
 
+    @gas_cost
     @member_required
     def publish_group_key(self,round):
         my_ui = self.tp_key_list[round][1]
@@ -288,6 +293,7 @@ class KeyManager:
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        return txn_hash
 
 
     def check_new_message(self):
