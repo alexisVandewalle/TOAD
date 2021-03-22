@@ -299,7 +299,7 @@ class KeyManager:
     def check_new_message(self,round):
         filter_new_msg = self.contract.events.NewMessage.createFilter(fromBlock=0, argument_filters={"round":round})
         events = filter_new_msg.get_all_entries()
-        if len(events)>self.nb_message_received:
+        if len(events)>0:
             self.nb_message_received +=1
             return True
         return False
