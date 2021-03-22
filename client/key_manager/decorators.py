@@ -1,5 +1,6 @@
 from functools import wraps
 import web3
+import time
 
 def member_required(method):
     @wraps(method)
@@ -16,6 +17,9 @@ def gas_cost(method):
         gas_used = self.w3.eth.getTransactionReceipt(txn_hash)['gasUsed']
         function_name = method.__name__
         with open("../gas_cost/gas_cost.csv", "a") as f:
-            f.write(function_name+","+str(gas_used)+","+self.private_key[0:6]+"\n")
+            f.write(function_name+","
+                +str(gas_used)+","
+                +self.private_key[0:6]+","
+                +time.time()+"\n")
 
     return wrapper
