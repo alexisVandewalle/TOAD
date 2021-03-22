@@ -296,7 +296,7 @@ class KeyManager:
         return txn_hash
 
 
-    def check_new_message(self):
+    def check_new_message(self,round):
         filter_new_msg = self.contract.events.NewMessage.createFilter(fromBlock=0, argument_filters={"round":round})
         events = filter_new_msg.get_all_entries()
         if len(events)>self.nb_message_received:
@@ -345,9 +345,9 @@ if __name__=="__main__":
             client.compute_group_keys(0,fj_ui)
             print("publishing group key")
             client.publish_group_key(0)
-
+            # TODO correct bug new message
             while(True):
-                if(client.check_new_message()):
+                if(client.check_new_message(round)):
                     round+=1
                     client.generate_anonymous_id()
                     client.generate_rand_poly(round)
