@@ -12,6 +12,6 @@ def gas_cost(method):
             f.write(function_name+","
                 +str(gas_used)+","
                 +self.private_key[0:6]+","
-                +time.time()+"\n")
+                +str(time.time())+"\n")
 
     return wrapper
