@@ -4,7 +4,7 @@ import numpy as np
 
 
 file_path = "client/gas_cost/gas_cost.csv"
-columns = ["function_name", "gas_cost", "user_id"]
+columns = ["function_name", "gas_cost", "user_id", "block_number"]
 df = pd.read_csv(file_path, names=columns)
 
 # list of function
@@ -25,7 +25,7 @@ df['round'] = 0
 for user in group:
     for fun in fun_list:
         df.loc[(df['user_id']==user) & (df['function_name']==fun),'round'] = range(len(df[(df['user_id']==user) & (df['function_name']==fun)]))
-
+pd.set_option('display.max_rows', None)
 
 # stats - min - mean - max init phase
 init = df[(df['function_name']!='send_file') & (df['function_name']!='send_share')]
@@ -59,17 +59,36 @@ encrypt_stats.gas_cost_mean.plot(kind='bar', label="gas cost mean", color='#BADA
 encrypt_stats.gas_cost_min.plot(kind='bar', label="gas cost min", color="none", edgecolor="blue", ax=ax[0,1],rot=0)
 ax[0,1].set_title("Encryption-decryption cost by user")
 
-# stats gas cumul per round
-cumul = df[(df['function_name']!='send_file') & (df['function_name']!="group_creation")]
-cumul = cumul.groupby(["round","function_name"]).mean()
-cumul = cumul.groupby('round').sum()
-cumul = cumul.cumsum()
-cumul.rename(columns={"gas_cost": "cumuled_gas_cost_per_file"}, inplace=True)
+# stats gas cumul
+df.sort_values(by="block_number", inplace=True)
 
-cumul.cumuled_gas_cost_per_file.plot(kind='bar', color='#BADA55', ax=ax[1,1], rot=0)
-ax[1,1].set_title('Cumuled gas cost per file (without send_file and group_creation step)')
+mapping = {
+    "group_creation":"initialisation",
+    "publish_tpk":"initialisation",
+    "encrypt_shares":"initialisation",
+    "publish_group_key":"initialisation",
+    "send_file":"encryption",
+    "send_share":"decryption"
+}
+df['phase'] = df['function_name'].map(mapping)
+df['cumul_gas_cost'] = df['gas_cost'].cumsum()
+
+df.plot("block_number", "cumul_gas_cost",ax=ax[1,1])
+for r in df['round'].unique():
+    min_block = df[(df['round']==r) & (df['phase']=='initialisation')]['block_number'].min()
+    max_block = df[(df['round']==r) & (df['phase']=='initialisation')]['block_number'].max()
+    ax[1,1].axvspan(min_block,max_block,fill=False, alpha=0.5, label="_"*int(r)+"initialisation", hatch=".")
+
+    min_block = df[(df['round']==r) & (df['phase']=='encryption')]['block_number'].min()
+    max_block = df[(df['round']==r) & (df['phase']=='encryption')]['block_number'].max()
+    ax[1,1].axvspan(min_block,max_block,color="black", alpha=0.5, label="_"*int(r)+"encryption")
+
+    min_block = df[(df['round']==r) & (df['phase']=='decryption')]['block_number'].min()
+    max_block = df[(df['round']==r) & (df['phase']=='decryption')]['block_number'].max()
+    ax[1,1].axvspan(min_block,max_block,fill=False, alpha=0.5,label="_"*int(r)+"decryption",hatch="//")
 
 ax[0,0].legend()
 ax[1,0].legend()
 ax[0,1].legend()
+ax[1,1].legend()
 plt.show()
