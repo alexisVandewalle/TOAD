@@ -99,8 +99,16 @@ class EventRetriever:
             abi = json.loads(json_file)['abi']
 
         self.contract = self.w3.eth.contract(contract_address, abi=abi)
-        self.group_size = self.contract.caller().N()
-        self.threshold = self.contract.caller().t()
+
+
+    def check_group_creation(self):
+        filter_group_creation = self.contract.events.GroupCreation.createFilter(fromBlock=0)
+        ev_group_creation = filter_group_creation.get_all_entries()
+        if len(ev_group_creation)==1:
+            self.group_size = self.contract.caller().N()
+            self.threshold = self.contract.caller().t()
+            return True
+        else: return False
 
     def retrieve_gpk(self):
         filter_gpk = self.contract.events.GroupKey.createFilter(fromBlock=0)
@@ -196,13 +204,16 @@ class EventRetriever:
         db.commit()
         db.close()
 
-    
+
 if __name__=="__main__":
     host, port, contract_address = parse_args()
     ev_retriever = EventRetriever(contract_address)
     while(True):
-        ev_retriever.retrieve_gpk()
-        ev_retriever.compute_mpk()
-        ev_retriever.retrieve_new_message()
-        ev_retriever.retrieve_share()
+        if(ev_retriever.check_group_creation()):
+            while True:
+                ev_retriever.retrieve_gpk()
+                ev_retriever.compute_mpk()
+                ev_retriever.retrieve_new_message()
+                ev_retriever.retrieve_share()
+                time.sleep(5)
         time.sleep(5)

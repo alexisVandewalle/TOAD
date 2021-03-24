@@ -104,7 +104,7 @@ class Client:
         ipfs_api = ipfsApi.Client('127.0.0.1',5001)
         with open(os.path.join(current_app.config['UPLOAD_FOLDER'],'temp_file'), 'wb') as f:
             f.write(ct['cipher_file'])
-        res = ipfs_api.add(os.path.join(current_app.config['UPLOAD_FOLDER'],'temp_file'))
+        res = ipfs_api.add(os.path.join(current_app.config['UPLOAD_FOLDER'],'temp_file'))[0]
         os.remove(os.path.join(current_app.config['UPLOAD_FOLDER'],'temp_file'))
 
         # send the encryption of symmetric key used in AES to the blockchain
