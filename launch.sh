@@ -5,6 +5,7 @@ source venv/bin/activate
 
 npx ganache-cli -d &
 npx truffle migrate
+ipfs --offline daemon &
 
 cd client/event_retriever
 python event_retriever.py -c $contract_address &
