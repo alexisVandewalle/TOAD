@@ -74,7 +74,7 @@ class Client:
             ).buildTransaction(
             {
                 'chainId':1,
-                'gas':1000000,
+                'gas':2000000,
                 'nonce': self.w3.eth.getTransactionCount(self.account)
             }
         )
