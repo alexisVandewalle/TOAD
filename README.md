@@ -16,7 +16,7 @@ On linux you can try to run the script install.sh by running
 ```
 + Install the python dependencies
 ```bash
-  pip install -r requierements.txt
+  pip install -r requirements.txt
  ```
  + Install truffle and ganache-cli
  ```bash
@@ -32,7 +32,7 @@ On linux you can try to run the script install.sh by running
  ```bash
  ipfs init
  ```
- 
+
  ## Running the application
  The easiest way to run the application is to run the script launch.sh
  with this command:
