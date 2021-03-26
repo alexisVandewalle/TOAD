@@ -37,12 +37,12 @@ On linux you can try to run the script install.sh by running
  The easiest way to run the application is to run the script launch.sh
  with this command:
  ```bash
- bash launch.sh <number of client>
+ bash launch.sh <number of clients>
  ```
  This script does the following step:
   + activate python virtual environnement
   + run ganache-cli with deterministic key and id with 20 accounts
   + compile and deploy the contract TOAD.sol
   + launch the script event_retriever.py
-  + launch key_manager.py <number of client> times
+  + launch key_manager.py (number of clients) times
   + run the web application to encrypt and decrypt files
