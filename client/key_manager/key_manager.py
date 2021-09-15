@@ -34,7 +34,7 @@ def parse_args():
         elif opt == '-c':
             contract_address = value
         elif opt == '-h':
-            host = 'http://'+host
+            host = 'http://'+value
         elif opt == '-s':
             private_key = value
     if contract_address is None:
@@ -100,7 +100,7 @@ class KeyManager:
         else: return False
 
     def get_contract_Info(self):
-        # La clé publique de l'utilisateur doit etre dans la base de donnée
+        # La cle publique de l'utilisateur doit etre dans la base de donnee
         # le group doit avoir ete cree
         self.group_size = self.contract.caller().N()
         self.threshold = self.contract.caller().t()

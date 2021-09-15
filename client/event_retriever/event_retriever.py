@@ -61,7 +61,7 @@ def parse_args():
         elif opt == '-c':
             contract_address = value
         elif opt == '-h':
-            host = 'http://'+host
+            host = 'http://'+value
     if contract_address is None:
         sys.exit('You must provide a contract address')
 
@@ -207,7 +207,7 @@ class EventRetriever:
 
 if __name__=="__main__":
     host, port, contract_address = parse_args()
-    ev_retriever = EventRetriever(contract_address)
+    ev_retriever = EventRetriever(contract_address, port, host)
     while(True):
         if(ev_retriever.check_group_creation()):
             while True:

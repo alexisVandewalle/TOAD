@@ -38,10 +38,11 @@ def group_creation():
 
     if request.method == 'POST':
         selected_accounts = request.form.getlist('accounts')
+        
         try:
             g.client.group_creation(selected_accounts)
         except ValueError:
-            flash('The group has already been created, you cannot create a group anymore')
+        #   flash('The group has already been created, you cannot create a group anymore')
     return render_template('toad/group_creation.html', accounts=accounts)
 
 @bp.route('/send_file/', methods=['GET','POST'])
@@ -151,7 +152,8 @@ def blockchain_connect():
     """
     contract_address = '0x5b1869D9A4C187F2EAa108f3062412ecf0526b24'
     port = '8545'
-    g.client = Client(contract_address, port)
+    host = 'http://192.168.33.107'
+    g.client = Client(contract_address, port, host)
     user_id = session.get('user_id')
 
     if user_id is None:
