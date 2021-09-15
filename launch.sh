@@ -6,7 +6,6 @@ port="8545"
 source venv/bin/activate
 
 truffle migrate --network=besuWallet
-ipfs daemon --api /ip4/192.168.33.107/tcp/5001
 
 cd client/event_retriever
 python event_retriever.py -c $contract_address -h $host -p $port &
