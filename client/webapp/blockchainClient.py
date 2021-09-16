@@ -64,7 +64,6 @@ class Client:
         ).fetchall()
         return [(int(row['pk_x'],0), int(row['pk_y'],0)) for row in public_keys]
 
-    @gas_cost
     def group_creation(self, selected_accounts):
         threshold = len(selected_accounts)//2
         public_keys = self.get_public_keys(selected_accounts)
@@ -82,7 +81,6 @@ class Client:
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
         return txn_hash
 
-    @gas_cost
     def send_file(self, file_to_encrypt):
         """
         Encrypt a file with a random symetric key and put it on ipfs. Then encrypt
@@ -123,7 +121,6 @@ class Client:
         txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
         return txn_hash
 
-    @gas_cost
     def send_share(self, file_info):
         """
         Send a share for a specific message along with its proof of correctness.

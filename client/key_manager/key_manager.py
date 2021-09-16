@@ -155,7 +155,6 @@ class KeyManager:
         coeffs = [self.si,]+coeffs
         self.poly_dict[round] = IntPoly(coeffs)
 
-    @gas_cost
     @member_required
     def publish_tpk(self,round):
         transaction = self.contract.functions.publish_pk(
@@ -198,7 +197,6 @@ class KeyManager:
         uj_list = [d['uj'] for d in self.tp_anon_id[round]]
         return [self.poly_dict[round].evaluate(uj) for uj in uj_list]
 
-    @gas_cost
     @member_required
     def encrypt_shares(self, round, shares):
         tski = self.tp_key_list[round][0].d
@@ -276,7 +274,6 @@ class KeyManager:
         print("group secret key:",self.gski)
         print("group public key:",self.gpki)
 
-    @gas_cost
     @member_required
     def publish_group_key(self,round):
         my_ui = self.tp_key_list[round][1]
