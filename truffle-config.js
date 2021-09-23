@@ -1,5 +1,5 @@
 const PrivateKeyProvider = require("@truffle/hdwallet-provider");
-const privateKey = "8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63";
+const privateKey = "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d";
 const privateKeyProvider = new PrivateKeyProvider(privateKey, "http://192.168.33.107:8545");
 
 module.exports = {

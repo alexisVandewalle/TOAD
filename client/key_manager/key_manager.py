@@ -163,7 +163,7 @@ class KeyManager:
             round
             ).buildTransaction(
             {
-                'chainId':1,
+                'chainId':1337,
                 'gas':1000000,
                 'nonce': self.w3.eth.getTransactionCount(self.public_account)
             }
@@ -213,7 +213,7 @@ class KeyManager:
             self.tp_key_list[round][1]
             ).buildTransaction(
             {
-                'chainId':1,
+                'chainId':1337,
                 'gas':1000000,
                 'nonce': self.w3.eth.getTransactionCount(self.public_account)
             }
@@ -283,7 +283,7 @@ class KeyManager:
             round
             ).buildTransaction(
             {
-                'chainId':1,
+                'chainId':1337,
                 'gas':1000000,
                 'nonce': self.w3.eth.getTransactionCount(self.public_account)
             }

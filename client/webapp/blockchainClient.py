@@ -72,7 +72,7 @@ class Client:
             encrypted_account, threshold
             ).buildTransaction(
             {
-                'chainId':1,
+                'chainId':1337,
                 'gas':2000000,
                 'nonce': self.w3.eth.getTransactionCount(self.account)
             }
@@ -112,7 +112,7 @@ class Client:
             cru.point_to_eth(ct['c2'])
             ).buildTransaction(
             {
-                'chainId':1,
+                'chainId':1337,
                 'gas':200000,
                 'nonce': self.w3.eth.getTransactionCount(self.account)
             }
@@ -148,7 +148,7 @@ class Client:
             proof
         ).buildTransaction(
             {
-                'chainId': 1,
+                'chainId': 1337,
                 'gas': 200000,
                 'nonce': self.w3.eth.getTransactionCount(self.account)
             }
