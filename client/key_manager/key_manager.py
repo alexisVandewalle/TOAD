@@ -13,6 +13,7 @@ from py_ecc.optimized_bn128 import curve_order as CURVE_ORDER
 from crypto_utils import H1, H2
 from py_ecc.optimized_bn128 import add, multiply, neg, normalize, pairing, is_on_curve
 from crypto_utils import IntPoly, encrypt_int, decrypt_int, point_to_eth
+import numpy as np
 
 from decorators import member_required, gas_cost
 # TODO evaluation of gas for each function
@@ -165,7 +166,7 @@ class KeyManager:
             {
                 'chainId':1337,
                 'gas':1000000,
-                'nonce': self.w3.eth.getTransactionCount(self.public_account)
+                'nonce': np.random.randint(1,1000000)
             }
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
@@ -215,7 +216,7 @@ class KeyManager:
             {
                 'chainId':1337,
                 'gas':1000000,
-                'nonce': self.w3.eth.getTransactionCount(self.public_account)
+                'nonce': np.random.randint(1,1000000)
             }
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
@@ -285,7 +286,7 @@ class KeyManager:
             {
                 'chainId':1337,
                 'gas':1000000,
-                'nonce': self.w3.eth.getTransactionCount(self.public_account)
+                'nonce': np.random.randint(1,1000000)
             }
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)

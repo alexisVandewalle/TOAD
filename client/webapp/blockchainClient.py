@@ -205,7 +205,7 @@ class Client:
 
         cid_ipfs = str(file_info['hash'])[2:-1]
 
-        ipfs_api = ipfsApi.Client('192.168.33.107', 8081)
+        ipfs_api = ipfsApi.Client('127.0.0.1', 8081)
         ipfs_api.get(cid_ipfs)
         with open(cid_ipfs, 'rb') as f:
             cipher_file = f.read()
