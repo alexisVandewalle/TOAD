@@ -1,9 +1,11 @@
 #!/bin/bash
-contract_address="0x5b1869D9A4C187F2EAa108f3062412ecf0526b24"
-account="0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d"
+contract_address="0xd9CF9d6b7685e70064a4d6DCD724A248Faf39Ff5"
+account="0x50365208718244dc38c6910d7b42379b135d5995caa1372fb79bc2e9d60f6704"
 host="192.168.33.107"
 port="8545"
 source venv/bin/activate
+
+ipfs daemon &
 
 cd client/event_retriever
 python event_retriever.py -c $contract_address -h $host -p $port &
