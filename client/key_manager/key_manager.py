@@ -166,7 +166,7 @@ class KeyManager:
             {
                 'chainId':1337,
                 'gas':1000000,
-                'nonce': np.random.randint(1,1000000)
+                'nonce': self.w3.eth.getTransactionCount(self.public_account)
             }
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
@@ -216,7 +216,7 @@ class KeyManager:
             {
                 'chainId':1337,
                 'gas':1000000,
-                'nonce': np.random.randint(1,1000000)
+                'nonce': self.w3.eth.getTransactionCount(self.public_account)
             }
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
@@ -286,7 +286,7 @@ class KeyManager:
             {
                 'chainId':1337,
                 'gas':1000000,
-                'nonce': np.random.randint(1,1000000)
+                'nonce': self.w3.eth.getTransactionCount(self.public_account)
             }
         )
         signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
