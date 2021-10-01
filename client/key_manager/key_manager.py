@@ -158,19 +158,26 @@ class KeyManager:
 
     @member_required
     def publish_tpk(self,round):
-        transaction = self.contract.functions.publish_pk(
-            [int(coord) for coord in self.tp_key_list[round][0].pointQ.xy],
-            self.tp_key_list[round][1],
-            round
-            ).buildTransaction(
-            {
-                'chainId':1337,
-                'gas':1000000,
-                'nonce': self.w3.eth.getTransactionCount(self.public_account)
-            }
-        )
-        signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
-        txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        count = 0
+        while True:
+            try:
+                transaction = self.contract.functions.publish_pk(
+                    [int(coord) for coord in self.tp_key_list[round][0].pointQ.xy],
+                    self.tp_key_list[round][1],
+                    round
+                    ).buildTransaction(
+                    {
+                        'chainId':1337,
+                        'gas':1000000,
+                        'nonce': self.w3.eth.getTransactionCount(self.public_account)+count
+                    }
+                )
+                signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
+                txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+                break
+            except ValueError:
+                count += 1
+                
         return txn_hash
 
     @member_required
@@ -208,19 +215,26 @@ class KeyManager:
             tpkj = tpkj_list[i]['tpkj']
             key_point = tpkj*tski
             result.append(encrypt_int(shares[i], key_point))
-        transaction = self.contract.functions.publish_share(
-            result,
-            round,
-            self.tp_key_list[round][1]
-            ).buildTransaction(
-            {
-                'chainId':1337,
-                'gas':1000000,
-                'nonce': self.w3.eth.getTransactionCount(self.public_account)
-            }
-        )
-        signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
-        txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        
+        count = 0
+        while True: 
+            try:
+                transaction = self.contract.functions.publish_share(
+                    result,
+                    round,
+                    self.tp_key_list[round][1]
+                    ).buildTransaction(
+                    {
+                        'chainId':1337,
+                        'gas':1000000,
+                        'nonce': self.w3.eth.getTransactionCount(self.public_account)+count
+                    }
+                )
+                signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
+                txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+                break
+            except ValueError:
+                count += 1
         return txn_hash
 
     @member_required
@@ -278,19 +292,26 @@ class KeyManager:
     @member_required
     def publish_group_key(self,round):
         my_ui = self.tp_key_list[round][1]
-        transaction = self.contract.functions.register_group_key(
-            point_to_eth(self.gpki[round]),
-            self.tp_key_list[round][1],
-            round
-            ).buildTransaction(
-            {
-                'chainId':1337,
-                'gas':1000000,
-                'nonce': self.w3.eth.getTransactionCount(self.public_account)
-            }
-        )
-        signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
-        txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        
+        count = 0
+        while True:
+            try:
+                transaction = self.contract.functions.register_group_key(
+                    point_to_eth(self.gpki[round]),
+                    self.tp_key_list[round][1],
+                    round
+                    ).buildTransaction(
+                    {
+                        'chainId':1337,
+                        'gas':1000000,
+                        'nonce': self.w3.eth.getTransactionCount(self.public_account)+count
+                    }
+                )
+                signed_tx = self.w3.eth.account.signTransaction(transaction, self.public_account_private_key)
+                txn_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+                break
+            except ValueError:
+                count+=1
         return txn_hash
 
 
