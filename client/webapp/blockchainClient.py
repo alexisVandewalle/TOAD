@@ -99,7 +99,7 @@ class Client:
         ct = cipher.encrypt(file_to_encrypt)
 
         # put cipher file in ipfs
-        ipfs_api = ipfsApi.Client('192.168.33.107',5001)
+        ipfs_api = ipfsApi.Client('127.0.0.1',5001)
         with open(os.path.join(current_app.config['UPLOAD_FOLDER'],'temp_file'), 'wb') as f:
             f.write(ct['cipher_file'])
         res = ipfs_api.add(os.path.join(current_app.config['UPLOAD_FOLDER'],'temp_file'))[0]
@@ -205,7 +205,7 @@ class Client:
 
         cid_ipfs = str(file_info['hash'])[2:-1]
 
-        ipfs_api = ipfsApi.Client('127.0.0.1', 8081)
+        ipfs_api = ipfsApi.Client('127.0.0.1', 8080)
         ipfs_api.get(cid_ipfs)
         with open(cid_ipfs, 'rb') as f:
             cipher_file = f.read()
